@@ -1,2 +1,23 @@
+### OS
+.DS_Store
 
-.vscode/
+### Editors
+*.iml
+.classpath
+.idea
+.project
+.settings
+.swp
+.vscode
+
+### Gradle
+.gradle
+
+### Node
+.env
+.nyc_output
+.yarnclean
+node_modules
+
+### Logs
+*.log
