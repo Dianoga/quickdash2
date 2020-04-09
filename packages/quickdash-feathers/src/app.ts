@@ -35,6 +35,7 @@ app.use('/', express.static(app.get('public')));
 // Set up Plugins and providers
 
 app.configure(socketio());
+app.configure(express.rest());
 
 // Configure other middleware (see `middleware/index.js`)
 app.configure(middleware);
