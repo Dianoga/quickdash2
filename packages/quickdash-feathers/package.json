@@ -25,7 +25,7 @@
   },
   "scripts": {
     "test": "npm run compile && npm run jest",
-    "dev": "ts-node-dev --inspect --respawn --no-notify src/",
+    "dev": "LOCAL=true ts-node-dev --inspect --respawn --no-notify src/",
     "start": "npm run compile && node lib/",
     "jest": "jest  --forceExit",
     "compile": "shx rm -rf lib/ && tsc"
@@ -47,6 +47,7 @@
     "@feathersjs/feathers": "^4.5.2",
     "@feathersjs/socketio": "^4.5.2",
     "@feathersjs/transport-commons": "^4.5.2",
+    "@smartthings/core-sdk": "^0.2.3",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "feathers-nedb": "^5.1.0",
