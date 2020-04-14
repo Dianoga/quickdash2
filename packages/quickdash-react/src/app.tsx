@@ -1,24 +1,18 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+
+import Login from './components/login';
+import { useSelector } from 'react-redux';
+import { RootState } from './store';
+
+import './app.scss';
 
 function App() {
+	const { user } = useSelector((state: RootState) => state.user);
+
 	return (
 		<div className="app">
-			<header className="app-header">
-				<img src={logo} className="app-logo" alt="logo" />
-				<p>
-					Edit <code>src/app.tsx</code> and save to reload.
-				</p>
-				<a
-					className="app-link"
-					href="https://reactjs.org"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					Learn React
-				</a>
-			</header>
+			{!user && <Login />}
+			{user && <p>Welcome {user.email}</p>}
 		</div>
 	);
 }
