@@ -7,6 +7,7 @@ interface UserData {
 	_id?: string;
 	email: string;
 	password: string;
+	smartthingsToken?: string;
 }
 
 export class Users extends Service<UserData> {

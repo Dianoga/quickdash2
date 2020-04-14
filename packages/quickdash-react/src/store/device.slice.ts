@@ -8,7 +8,7 @@ export const refreshDevices = createAsyncThunk(
 		console.log('hi there');
 		const response = await client
 			.service('api/quickdash')
-			.create({ command: 'UPDATE_DEVICES' });
+			.create({ command: 'REFRESH_DEVICES' });
 		return response;
 	}
 );
@@ -30,7 +30,7 @@ const deviceSlice = createSlice({
 	reducers: {},
 	extraReducers: (builder) => {
 		builder.addCase(refreshDevices.fulfilled, (state, action) => {
-			console.log('did the thing');
+			console.log('did the thing', action);
 		});
 	},
 });

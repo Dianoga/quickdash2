@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { loginUser } from '../store/user.slice';
+import { loginUser } from '../../store/user.slice';
 
 const Login: React.FC = () => {
 	const [email, setEmail] = useState('');

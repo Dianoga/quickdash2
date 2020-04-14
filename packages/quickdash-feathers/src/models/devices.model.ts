@@ -10,6 +10,7 @@ export default function (app: Application) {
 	});
 
 	Model.ensureIndex({ fieldName: 'deviceId', unique: true });
+	Model.ensureIndex({ fieldName: 'userId' });
 
 	return Model;
 }

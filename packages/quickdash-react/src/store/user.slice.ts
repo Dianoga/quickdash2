@@ -3,6 +3,9 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import client from '../libs/feathers';
 
 type LoginPayload = { email: string; password: string };
+type UpdateProfilePayload = { id: string; smartthingsToken?: string };
+
+export type User = { _id: string; email: string; smartthingsToken?: string };
 
 export const loginUser = createAsyncThunk(
 	'user/login',
@@ -16,6 +19,16 @@ export const loginUser = createAsyncThunk(
 	}
 );
 
+export const updateUserProfile = createAsyncThunk(
+	'user/updateProfile',
+	async ({ id, smartthingsToken }: UpdateProfilePayload) => {
+		const response = await client
+			.service('api/users')
+			.patch(id, { smartthingsToken });
+		return response;
+	}
+);
+
 // const fetchDevices = createAsyncThunk('device/fetchDevices', async () => {
 // 	const resp =
 // });
@@ -24,18 +37,20 @@ type Device = {};
 
 type SliceState = {
 	loading: boolean;
-	user: any;
+	user?: User;
 };
 
 const userSlice = createSlice({
 	name: 'user',
-	initialState: { loading: false, user: null } as SliceState,
+	initialState: { loading: false, user: undefined } as SliceState,
 	reducers: {},
 	extraReducers: (builder) => {
 		builder.addCase(loginUser.fulfilled, (state, action) => {
 			const { user } = action.payload;
 			state.user = user;
-			console.log('did the thing');
+		});
+		builder.addCase(updateUserProfile.fulfilled, (state, action) => {
+			console.log(action);
 		});
 	},
 });
