@@ -1,4 +1,5 @@
 import * as authentication from '@feathersjs/authentication';
+import { limitToUser, setUserId } from '../../hooks/user-management';
 // Don't remove this comment. It's needed to format import lines nicely.
 
 const { authenticate } = authentication.hooks;
@@ -6,12 +7,12 @@ const { authenticate } = authentication.hooks;
 export default {
 	before: {
 		all: [authenticate('jwt')],
-		find: [],
-		get: [],
-		create: [],
-		update: [],
-		patch: [],
-		remove: [],
+		find: [limitToUser],
+		get: [limitToUser],
+		create: [setUserId],
+		update: [limitToUser],
+		patch: [limitToUser],
+		remove: [limitToUser],
 	},
 
 	after: {

@@ -3,7 +3,7 @@ import React from 'react';
 import Login from './components/user/login';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from './store';
-import { refreshDevices } from './store/device.slice';
+import { fetchDevices, refreshDevices } from './store/device.slice';
 
 import './app.scss';
 import Profile from './components/user/profile';
@@ -23,6 +23,11 @@ function App() {
 							<li>
 								<button onClick={() => dispatch(refreshDevices())}>
 									Refresh Devices
+								</button>
+							</li>
+							<li>
+								<button onClick={() => dispatch(fetchDevices())}>
+									Fetch Devices
 								</button>
 							</li>
 						</ul>
