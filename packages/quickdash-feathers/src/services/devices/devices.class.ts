@@ -2,6 +2,7 @@ import { Service, NedbServiceOptions } from 'feathers-nedb';
 import { Application } from '../../declarations';
 
 export interface DeviceData {
+	deviceId: string;
 	components: any;
 	displayName: string;
 	locationId: string;

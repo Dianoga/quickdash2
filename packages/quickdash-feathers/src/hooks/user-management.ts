@@ -1,7 +1,7 @@
 import { setField } from 'feathers-authentication-hooks';
 
 export const setUserId = setField({
-	from: 'params.user.id',
+	from: 'params.user._id',
 	as: 'data.userId',
 });
 
