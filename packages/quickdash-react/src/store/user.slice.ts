@@ -2,10 +2,18 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import client from '../libs/feathers';
 
-type LoginPayload = { email: string; password: string };
-type UpdateProfilePayload = { id: string; smartthingsToken?: string };
+export type User = {
+	_id: string;
+	email: string;
+	smartthingsToken?: string;
+	smartthingsSubscribeToken?: string;
+};
 
-export type User = { _id: string; email: string; smartthingsToken?: string };
+type LoginPayload = { email: string; password: string };
+type UpdateProfilePayload = Pick<
+	User,
+	'_id' | 'smartthingsToken' | 'smartthingsSubscribeToken'
+>;
 
 export const loginUser = createAsyncThunk(
 	'user/login',
@@ -21,10 +29,14 @@ export const loginUser = createAsyncThunk(
 
 export const updateUserProfile = createAsyncThunk(
 	'user/updateProfile',
-	async ({ id, smartthingsToken }: UpdateProfilePayload) => {
+	async ({
+		_id,
+		smartthingsToken,
+		smartthingsSubscribeToken,
+	}: UpdateProfilePayload) => {
 		const response = await client
 			.service('api/users')
-			.patch(id, { smartthingsToken });
+			.patch(_id, { smartthingsToken, smartthingsSubscribeToken });
 		return response;
 	}
 );

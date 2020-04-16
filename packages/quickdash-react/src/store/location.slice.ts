@@ -12,6 +12,16 @@ export const refreshLocations = createAsyncThunk(
 	}
 );
 
+export const subscribeSmartthings = createAsyncThunk(
+	'location/subscribeSmartthings',
+	async () => {
+		const response = await client
+			.service('api/quickdash')
+			.create({ command: 'START_SMARTTHINGS_SUBSCRIPTION' });
+		return response;
+	}
+);
+
 export const fetchLocations = createAsyncThunk(
 	'location/fetchLocations',
 	async () => {

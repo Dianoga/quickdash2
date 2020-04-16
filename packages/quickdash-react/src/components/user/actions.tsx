@@ -3,7 +3,10 @@ import { useDispatch } from 'react-redux';
 
 import { fetchDevices, refreshDevices } from '../../store/device.slice';
 import { refreshDeviceStatuses } from '../../store/device-status.slice';
-import { refreshLocations } from '../../store/location.slice';
+import {
+	refreshLocations,
+	subscribeSmartthings,
+} from '../../store/location.slice';
 import { refreshRooms } from '../../store/room.slice';
 
 const UserActions: React.FC = () => {
@@ -27,6 +30,11 @@ const UserActions: React.FC = () => {
 			<li>
 				<button onClick={() => dispatch(refreshDeviceStatuses())}>
 					Refresh Device Statuses
+				</button>
+			</li>
+			<li>
+				<button onClick={() => dispatch(subscribeSmartthings())}>
+					Start SmartThings Subscription
 				</button>
 			</li>
 		</ul>

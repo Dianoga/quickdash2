@@ -1,30 +1,44 @@
 import { Params } from '@feathersjs/feathers';
-import { SmartThingsClient } from '@smartthings/core-sdk';
+import { SmartThingsClient, DeviceStatus } from '@smartthings/core-sdk';
 import { Unprocessable } from '@feathersjs/errors';
 
 import { Application } from '../../declarations';
 import { DeviceData } from '../devices/devices.class';
 import { LocationData } from '../locations/locations.class';
+import { SubscriptionManager } from '../../utils/subscription.manager';
 
 interface ServiceOptions {}
 
 type CommandData = {
-	command: 'REFRESH_DEVICES';
+	command:
+		| 'REFRESH_DEVICES'
+		| 'REFRESH_DEVICE_STATUSES'
+		| 'REFRESH_LOCATIONS'
+		| 'REFRESH_ROOMS'
+		| 'START_SMARTTHINGS_SUBSCRIPTION';
 };
 
 type CommandParams = Params & {
 	smartthingsSdk?: SmartThingsClient;
 };
 
-const smartthingsCommands = ['REFRESH_DEVICES', 'REFRESH_DEVICE_STATUSES'];
+const smartthingsCommands = [
+	'REFRESH_DEVICES',
+	'REFRESH_DEVICE_STATUSES',
+	'REFRESH_LOCATIONS',
+	'REFRESH_ROOMS',
+];
 
 export class Quickdash {
 	app: Application;
 	options: ServiceOptions;
+	subscriptionManager: SubscriptionManager;
 
 	constructor(options: ServiceOptions = {}, app: Application) {
 		this.options = options;
 		this.app = app;
+
+		this.subscriptionManager = new SubscriptionManager(app);
 	}
 
 	async create({ command }: CommandData, params?: CommandParams): Promise<any> {
@@ -67,12 +81,53 @@ export class Quickdash {
 
 			devices.forEach(async (d) => {
 				if (d.service === 'SMARTTHINGS') {
-					const statuses = await st.devices.getStatus(d.deviceId);
-					service.update(
-						d.deviceId,
-						{ ...statuses, userId },
-						{ ...params, nedb: { upsert: true } }
-					);
+					try {
+						const statuses = await st.devices.getStatus(d.deviceId);
+
+						if (!statuses.components) return;
+
+						Object.keys(statuses.components).forEach((componentId) => {
+							const component = statuses.components?.[componentId];
+							if (!component) return;
+
+							Object.keys(component).forEach((capabilityId) => {
+								Object.keys(component[capabilityId]).forEach(
+									(attributeName) => {
+										const attribute = component[capabilityId][attributeName];
+										let { value, unit, data } = attribute;
+										let valueType;
+
+										if (
+											value &&
+											typeof value !== 'string' &&
+											typeof value !== 'number'
+										) {
+											value = JSON.stringify(value);
+											valueType = 'json';
+										}
+
+										service.update(
+											d.deviceId,
+											{
+												deviceId: d.deviceId,
+												componentId,
+												capabilityId,
+												attributeName,
+												value,
+												valueType: valueType === 'json' ? 'json' : undefined,
+												unit,
+												data,
+												userId,
+											},
+											{ ...params, nedb: { upsert: true } }
+										);
+									}
+								);
+							});
+						});
+					} catch (e) {
+						console.error('Problem updating device status', e);
+					}
 				}
 			});
 		} else if (command === 'REFRESH_LOCATIONS') {
@@ -108,6 +163,8 @@ export class Quickdash {
 					});
 				}
 			});
+		} else if (command === 'START_SMARTTHINGS_SUBSCRIPTION') {
+			this.subscriptionManager.subscribe(userId);
 		}
 	}
 }
