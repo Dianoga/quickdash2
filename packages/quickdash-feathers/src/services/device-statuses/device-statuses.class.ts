@@ -1,7 +1,7 @@
 import { Service, NedbServiceOptions } from 'feathers-nedb';
 import { Application } from '../../declarations';
 
-interface DeviceStatusData {
+export interface DeviceStatusData {
 	data?: any;
 	deviceId: string;
 	componentId: string;

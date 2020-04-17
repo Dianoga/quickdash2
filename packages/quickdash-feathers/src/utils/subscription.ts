@@ -1,6 +1,9 @@
-import { Application } from '../declarations';
+import EventSource from 'eventsource';
 
-const EventSource = require('eventsource');
+import { Application } from '../declarations';
+import { SpigotEvent } from '../typings/events';
+import { DeviceStatusData } from '../services/device-statuses/device-statuses.class';
+import { buildStatusId } from '../hooks/build-status-id';
 
 export enum EventType {
 	CONTROL_EVENT = 'CONTROL_EVENT',
@@ -45,6 +48,8 @@ export class Subscription {
 	) {
 		this.logger = logger;
 
+		if (!userId) throw new Error('Missing user id');
+
 		this.handleEvent = this.handleEvent.bind(this);
 		this.reconnect = this.reconnect.bind(this);
 		this.connect();
@@ -56,7 +61,7 @@ export class Subscription {
 		});
 
 		es.onopen = () => {
-			this.logger.debug('subscription.open', { url: this.url });
+			this.logger.debug('Spigot:open', { url: this.url });
 
 			if (this.reconnectTimeout) {
 				clearTimeout(this.reconnectTimeout);
@@ -65,7 +70,7 @@ export class Subscription {
 		};
 
 		es.onmessage = (e) => {
-			this.logger.debug('subscription.message', e);
+			this.logger.debug('Spigot:message', e);
 		};
 
 		/**
@@ -73,7 +78,7 @@ export class Subscription {
 		 * spigot will close the connection and EventSource will auto-reconnect.
 		 */
 		es.onerror = (e) => {
-			this.logger.error('subscription.error', e);
+			this.logger.error('Spigot:error', e);
 		};
 	}
 
@@ -85,7 +90,7 @@ export class Subscription {
 	}
 
 	reconnect() {
-		this.logger.debug('Spigot: reconnecting');
+		this.logger.debug('Spigot:reconnecting');
 		this.disconnect();
 		this.connect();
 	}
@@ -100,16 +105,37 @@ export class Subscription {
 			// don't care
 		}
 
-		this.dispatch(evt.type, data);
+		this.safeDispatch(evt.type, data);
 	}
 
 	disconnect() {
 		this.es?.close();
 	}
 
-	dispatch(type: EventType, data: any) {
+	safeDispatch(type: EventType, eventData: SpigotEvent) {
+		try {
+			this.dispatch(type, eventData);
+		} catch (e) {
+			console.error('spigot:event-error', e);
+		}
+	}
+
+	dispatch(type: EventType, eventData: SpigotEvent) {
+		const params = { user: { _id: this.userId } };
+
 		if (type === EventType.DEVICE_EVENT) {
-			console.log(data);
+			const e = eventData.deviceEvent;
+
+			const id = buildStatusId({
+				deviceId: e.deviceId,
+				componentId: e.componentId,
+				capabilityId: e.capability,
+				attributeName: e.attribute,
+			});
+			const data: Partial<DeviceStatusData> = {
+				value: e.value,
+			};
+			this.app.service('api/device-statuses').patch(id, data, params);
 		}
 	}
 }

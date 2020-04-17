@@ -15,7 +15,6 @@ declare module '../../declarations' {
 export default function (app: Application) {
 	const options = {
 		Model: createModel(app),
-		id: 'deviceId',
 	};
 
 	// Initialize our service with any options it requires

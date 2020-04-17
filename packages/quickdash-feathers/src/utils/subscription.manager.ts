@@ -9,7 +9,7 @@ export class SubscriptionManager {
 
 	constructor(private app: Application) {}
 
-	async subscribe(userId: string, token: string) {
+	async subscribe(userId: string) {
 		if (!this.subscriptions[userId]) {
 			const user = await this.app.service('api/users').get(userId);
 			const token = user.smartthingsSubscribeToken;
