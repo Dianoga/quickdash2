@@ -15,7 +15,11 @@
     "@types/react": "^16.9.31",
     "@types/react-dom": "^16.9.6",
     "@types/react-redux": "^7.1.7",
+    "bulma": "^0.8.2",
+    "classnames": "^2.2.6",
     "history": "^5.0.0-beta.7",
+    "muuri": "^0.8.0",
+    "muuri-react": "^3.0.3",
     "node-sass": "^4.13.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -47,5 +51,8 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:3030"
+  "proxy": "http://localhost:3030",
+  "devDependencies": {
+    "@types/classnames": "^2.2.10"
+  }
 }

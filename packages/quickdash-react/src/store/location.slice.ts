@@ -56,5 +56,5 @@ const locationSlice = createSlice({
 	},
 });
 
-export const {} = locationSlice.actions;
+// export const {} = locationSlice.actions;
 export default locationSlice.reducer;

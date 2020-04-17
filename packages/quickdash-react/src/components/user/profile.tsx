@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../store';
 import { updateUserProfile, User } from '../../store/user.slice';
 import UserActions from './actions';
+import PageLayout from '../utility/page.layout';
+import { Input, Button } from '../elements';
 
 const Profile: React.FC = () => {
 	const { user } = useSelector((state: RootState) => state.user);
@@ -30,35 +32,35 @@ const Profile: React.FC = () => {
 	if (!user) return null;
 
 	return (
-		<>
-			<section className="profile">
-				<h2>User Profile</h2>
-				<form onSubmit={handleSubmit}>
-					<label htmlFor="smartthings-token">SmartThings Token</label>
-					<input
-						type="text"
-						id="smartthings-token"
-						name="smartthings-token"
-						value={smartthingsToken}
-						onChange={(evt) => setSmartthingsToken(evt.target.value)}
-					/>
-					<label htmlFor="smartthings-subscribe-token">
-						SmartThings Subscribe Token
-					</label>
-					<input
-						type="text"
-						id="smartthings-subscribe-token"
-						name="smartthings-subscribe-token"
-						value={smartthingsSubscribeToken}
-						onChange={(evt) => setSmartthingsSubscribeToken(evt.target.value)}
-					/>
-					<button type="submit">Update profile</button>
-				</form>
+		<PageLayout>
+			<h1 className="title">User Profile</h1>
+			<section className="section profile">
+				<h2 className="subtitle">Settings</h2>
+				<div className="container">
+					<form onSubmit={handleSubmit}>
+						<Input
+							type="text"
+							label="SmartThings token"
+							value={smartthingsToken}
+							onChange={(evt) => setSmartthingsToken(evt.target.value)}
+						/>
+
+						<Input
+							label="SmartThings subscribe token"
+							type="text"
+							value={smartthingsSubscribeToken}
+							onChange={(evt) => setSmartthingsSubscribeToken(evt.target.value)}
+						/>
+						<Button control={true} extraClasses="is-success">
+							Update profile
+						</Button>
+					</form>
+				</div>
 			</section>
-			<section>
+			<section className="section">
 				<UserActions />
 			</section>
-		</>
+		</PageLayout>
 	);
 };
 

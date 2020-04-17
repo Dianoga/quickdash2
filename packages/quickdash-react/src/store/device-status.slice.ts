@@ -46,5 +46,5 @@ const deviceSlice = createSlice({
 	},
 });
 
-export const {} = deviceSlice.actions;
+// export const {} = deviceSlice.actions;
 export default deviceSlice.reducer;

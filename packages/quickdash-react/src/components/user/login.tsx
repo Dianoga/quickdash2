@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../../store/user.slice';
+import { Input, Button } from '../elements';
+import PageLayout from '../utility/page.layout';
 
 const Login: React.FC = () => {
 	const [email, setEmail] = useState('');
@@ -15,23 +17,27 @@ const Login: React.FC = () => {
 	};
 
 	return (
-		<section className="login">
-			<form onSubmit={handleLogin}>
-				<input
-					type="email"
-					name="email"
-					value={email}
-					onChange={(evt) => setEmail(evt.target.value)}
-				/>
-				<input
-					type="password"
-					name="password"
-					value={password}
-					onChange={(evt) => setPassword(evt.target.value)}
-				/>
-				<button type="submit">Login</button>
-			</form>
-		</section>
+		<PageLayout>
+			<section className="login section">
+				<form onSubmit={handleLogin}>
+					<Input
+						type="email"
+						label="Email"
+						value={email}
+						onChange={(evt) => setEmail(evt.target.value)}
+					/>
+					<Input
+						type="password"
+						label="Password"
+						value={password}
+						onChange={(evt) => setPassword(evt.target.value)}
+					/>
+					<Button control={true} extraClasses="is-success">
+						Login
+					</Button>
+				</form>
+			</section>
+		</PageLayout>
 	);
 };
 
