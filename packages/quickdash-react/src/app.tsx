@@ -11,7 +11,7 @@ import { RootState } from './store';
 import Dashboard from './components/dashboard/dashboard';
 
 function App() {
-	const { user } = useSelector((state: RootState) => state.user);
+	const { user, loading } = useSelector((state: RootState) => state.user);
 
 	return (
 		<div className="app">
@@ -23,8 +23,13 @@ function App() {
 						<Route path="*" element={<Navigate to="/" />} />
 					</>
 				)}
-				{!user && <Route path="*" element={<Login />} />}
+				{!user && !loading && <Route path="*" element={<Login />} />}
 			</Routes>
+			{!user && loading && (
+				<div className="container">
+					<div className="notification is-primary">Loading</div>
+				</div>
+			)}
 		</div>
 	);
 }

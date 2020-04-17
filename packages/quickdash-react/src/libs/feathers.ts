@@ -7,6 +7,7 @@ const client = feathers();
 
 export const initFeathers = async (dispatch: Function): Promise<void> => {
 	const socket = io('/');
+	dispatch({ type: 'user/login/pending' });
 
 	socket.on('connect', () => {
 		console.log('connect');

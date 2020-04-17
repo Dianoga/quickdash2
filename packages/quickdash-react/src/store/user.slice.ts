@@ -57,6 +57,10 @@ const userSlice = createSlice({
 	initialState: { loading: false, user: undefined } as SliceState,
 	reducers: {},
 	extraReducers: (builder) => {
+		builder.addCase(loginUser.pending, (state, action) => {
+			state.loading = true;
+		});
+
 		builder.addCase(loginUser.fulfilled, (state, action) => {
 			const { user } = action.payload;
 			state.user = user;

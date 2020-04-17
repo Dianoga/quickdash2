@@ -1,0 +1,47 @@
+.muuri {
+	position: relative;
+}
+
+$widgetCols: 12;
+$widgetRows: 6;
+
+@for $i from 2 through $widgetCols {
+	.widget.width-#{$i} {
+		width: #{(100 * ($i/$widgetCols))}vw;
+	}
+}
+
+@for $i from 2 through $widgetRows {
+	.widget.height-#{$i} {
+		height: #{(100 * ($i/$widgetRows))}vh;
+	}
+}
+
+.widget {
+	display: block;
+	position: absolute;
+	width: #{100 * (1 / $widgetCols)}vw;
+	height: #{100 * (1 / $widgetCols)}vh;
+	margin: 5px;
+	z-index: 1;
+	background: #000;
+	color: #fff;
+
+	&.muuri-item-dragging {
+		z-index: 3;
+	}
+
+	&.muuri-item-releasing {
+		z-index: 2;
+	}
+
+	&.muuri-item-hidden {
+		z-index: 0;
+	}
+}
+
+.widget-content {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
