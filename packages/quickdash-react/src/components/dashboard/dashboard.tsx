@@ -16,7 +16,7 @@ const Dashboard: React.FC = () => {
 			key: 'test-2',
 			widgetInfo: {
 				type: 'DOOR_CONTROL',
-				deviceId: '1234',
+				deviceId: '2dab3f37-af18-455d-abd0-912470af4b4a',
 			},
 		},
 	]);
@@ -26,19 +26,11 @@ const Dashboard: React.FC = () => {
 	});
 
 	const layoutOptions = {
-		dragReleaseDuration: 400,
-		dragSortHeuristics: {
-			sortInterval: 60,
-		},
-		layoutDuration: 400,
-		dragReleseEasing: 'ease',
-		layoutEasing: 'ease',
-		dragEnabled: true,
+		dragEnabled: false,
 		dragContainer: document.body,
 		// The placeholder of an item that is being dragged.
 		dragPlaceholder: {
 			enabled: true,
-			duration: 400,
 			createElement: function (item: any) {
 				return item.getElement().cloneNode(true);
 			},
