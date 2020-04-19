@@ -60,6 +60,9 @@ const userSlice = createSlice({
 		builder.addCase(loginUser.pending, (state, action) => {
 			state.loading = true;
 		});
+		builder.addCase(loginUser.rejected, (state, action) => {
+			state.loading = false;
+		});
 
 		builder.addCase(loginUser.fulfilled, (state, action) => {
 			const { user } = action.payload;

@@ -39,6 +39,7 @@ export const initFeathers = async (dispatch: Function): Promise<void> => {
 		})
 		.catch((e) => {
 			console.warn('Re auth failed', e);
+			dispatch({ type: 'user/login/rejected', payload: e });
 		});
 };
 

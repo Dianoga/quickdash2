@@ -2,16 +2,6 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import client from '../libs/feathers';
 
-export const refreshDevices = createAsyncThunk(
-	'device/refreshDevices',
-	async () => {
-		const response = await client
-			.service('api/quickdash')
-			.create({ command: 'REFRESH_DEVICES' });
-		return response;
-	}
-);
-
 export const fetchDevices = createAsyncThunk(
 	'device/fetchDevices',
 	async () => {

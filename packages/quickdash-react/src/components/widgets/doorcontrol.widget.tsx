@@ -2,39 +2,45 @@ import React, { useState } from 'react';
 import classnames from 'classnames';
 
 import './doorcontrol.widget.scss';
+import { useDeviceStatus } from '../../utils/device.hooks';
 
 export type DoorControlProps = {
 	deviceId: string;
 };
 
 const DoorControl: React.FC<DoorControlProps> = ({ deviceId }) => {
-	const [status, setStatus] = useState('closed');
+	// const [status, setStatus] = useState('closed');
+	const [status] = useDeviceStatus({
+		deviceId: deviceId,
+		componentId: 'main',
+		capabilityId: 'doorControl',
+		attributeName: 'door',
+	});
 
 	const device: any = {};
 
 	const widgetClasses = classnames({
 		'door-control': true,
-		warn: device.door !== 'closed',
-		busy: device.busy,
+		warn: status?.value !== 'closed',
 	});
 
 	const doorClasses = classnames({
 		door: true,
-		[status]: true,
+		[status?.value]: true,
 	});
 
 	const handleToggle = (event: React.SyntheticEvent) => {
 		event.stopPropagation();
 
-		if (status === 'closed') {
-			setStatus('opening');
-		} else if (status === 'opening') {
-			setStatus('open');
-		} else if (status === 'open') {
-			setStatus('closing');
-		} else {
-			setStatus('closed');
-		}
+		// if (status === 'closed') {
+		// 	setStatus('opening');
+		// } else if (status === 'opening') {
+		// 	setStatus('open');
+		// } else if (status === 'open') {
+		// 	setStatus('closing');
+		// } else {
+		// 	setStatus('closed');
+		// }
 	};
 
 	return (

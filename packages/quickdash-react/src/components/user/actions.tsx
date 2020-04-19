@@ -1,8 +1,10 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
-import { refreshDevices } from '../../store/device.slice';
-import { refreshDeviceStatuses } from '../../store/device-status.slice';
+import {
+	refreshDevices,
+	refreshDeviceStatuses,
+} from '../../store/quickdash.slice';
 import {
 	refreshLocations,
 	subscribeSmartthings,
