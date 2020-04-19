@@ -3,9 +3,11 @@ import { useData } from 'muuri-react';
 import TestWidget from './test.widget';
 
 const DoorControl = lazy(() => import('./doorcontrol.widget'));
+const Aggregate = lazy(() => import('./aggregate.widget'));
 
 enum WidgetType {
 	DOOR_CONTROL = 'DOOR_CONTROL',
+	AGGREGATE = 'AGGREGATE',
 	TEST = 'TEST',
 }
 
@@ -23,6 +25,8 @@ const Widget: React.FC<Props> = ({ widgetInfo: { type, ...widgetParams } }) => {
 		widget = <TestWidget {...widgetParams} />;
 	} else if (type === WidgetType.DOOR_CONTROL) {
 		widget = <DoorControl {...widgetParams} />;
+	} else if (type === WidgetType.AGGREGATE) {
+		widget = <Aggregate {...widgetParams} />;
 	}
 
 	return (

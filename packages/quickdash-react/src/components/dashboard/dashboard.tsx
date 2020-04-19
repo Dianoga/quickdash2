@@ -7,13 +7,31 @@ import Widget from '../widgets/widget';
 const Dashboard: React.FC = () => {
 	const [widgets, setWidgets] = useState([
 		{
-			key: 'test-1',
+			key: 'aggregate-1',
 			widgetInfo: {
-				type: 'TEST',
+				type: 'AGGREGATE',
+				capabilityId: 'switch',
+				attributeName: 'switch',
 			},
 		},
 		{
-			key: 'test-2',
+			key: 'aggregate-2',
+			widgetInfo: {
+				type: 'AGGREGATE',
+				capabilityId: 'contactSensor',
+				attributeName: 'contact',
+			},
+		},
+		{
+			key: 'aggregate-3',
+			widgetInfo: {
+				type: 'AGGREGATE',
+				capabilityId: 'motionSensor',
+				attributeName: 'motion',
+			},
+		},
+		{
+			key: 'door_control_1',
 			widgetInfo: {
 				type: 'DOOR_CONTROL',
 				deviceId: '2dab3f37-af18-455d-abd0-912470af4b4a',

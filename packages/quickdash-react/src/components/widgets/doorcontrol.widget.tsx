@@ -2,27 +2,21 @@ import React, { useState } from 'react';
 import classnames from 'classnames';
 
 import './doorcontrol.widget.scss';
-import { useDeviceStatus } from '../../utils/device.hooks';
+import { useDeviceStatuses } from '../../utils/device.hooks';
 
 export type DoorControlProps = {
 	deviceId: string;
 };
 
 const DoorControl: React.FC<DoorControlProps> = ({ deviceId }) => {
-	// const [status, setStatus] = useState('closed');
-	const [status] = useDeviceStatus({
-		deviceId: deviceId,
-		componentId: 'main',
-		capabilityId: 'doorControl',
-		attributeName: 'door',
-	});
-
-	const device: any = {};
-
-	const widgetClasses = classnames({
-		'door-control': true,
-		warn: status?.value !== 'closed',
-	});
+	const [status] = useDeviceStatuses([
+		{
+			deviceId: deviceId,
+			componentId: 'main',
+			capabilityId: 'doorControl',
+			attributeName: 'door',
+		},
+	]);
 
 	const doorClasses = classnames({
 		door: true,
@@ -44,7 +38,7 @@ const DoorControl: React.FC<DoorControlProps> = ({ deviceId }) => {
 	};
 
 	return (
-		<div className={widgetClasses} onClick={handleToggle}>
+		<div className="door-control" onClick={handleToggle}>
 			<div className="roof" />
 			<div className="walls">
 				<div className="hole">

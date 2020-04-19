@@ -11,7 +11,11 @@ export const fetchDevices = createAsyncThunk(
 );
 
 export type DeviceData = {
-	components: any;
+	components: {
+		id: string;
+		label: string;
+		capabilities: { id: string; version: string }[];
+	}[];
 	deviceId: string;
 	displayName: string;
 	locationId: string;
