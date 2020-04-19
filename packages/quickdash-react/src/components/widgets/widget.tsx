@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { useData } from 'muuri-react';
 import TestWidget from './test.widget';
-import DoorControl, { DoorControlProps } from './doorcontrol.widget';
+
+const DoorControl = lazy(() => import('./doorcontrol.widget'));
 
 enum WidgetType {
 	DOOR_CONTROL = 'DOOR_CONTROL',
@@ -26,7 +27,11 @@ const Widget: React.FC<Props> = ({ widgetInfo: { type, ...widgetParams } }) => {
 
 	return (
 		<div className="widget">
-			<div className="widget-content">{widget}</div>
+			<div className="widget-content">
+				<Suspense fallback={<div className="widget">Loading</div>}>
+					{widget}
+				</Suspense>
+			</div>
 		</div>
 	);
 };
