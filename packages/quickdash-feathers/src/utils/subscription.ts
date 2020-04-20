@@ -79,6 +79,7 @@ export class Subscription {
 		 */
 		es.onerror = (e) => {
 			this.logger.error('Spigot:error', e);
+			// @todo Handle 403 error { type: 'error', status: 403, message: 'Forbidden' }
 		};
 	}
 

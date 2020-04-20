@@ -37,7 +37,7 @@ const Aggregate: React.FC<Props> = ({
 		valueCounts[value]++;
 	});
 
-	console.log(valueCounts);
+	// console.log(valueCounts);
 
 	return <pre className="">{JSON.stringify(valueCounts, null, 2)}</pre>;
 };

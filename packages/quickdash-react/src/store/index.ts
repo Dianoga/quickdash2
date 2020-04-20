@@ -1,4 +1,8 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import {
+	combineReducers,
+	configureStore,
+	getDefaultMiddleware,
+} from '@reduxjs/toolkit';
 
 import device from './device.slice';
 import deviceStatus from './device-status.slice';
@@ -13,5 +17,11 @@ export const rootReducer = combineReducers({
 	room,
 	user,
 });
-export const store = configureStore({ reducer: rootReducer });
+export const store = configureStore({
+	reducer: rootReducer,
+	middleware: getDefaultMiddleware({
+		immutableCheck: false,
+		serializableCheck: false,
+	}),
+});
 export type RootState = ReturnType<typeof rootReducer>;

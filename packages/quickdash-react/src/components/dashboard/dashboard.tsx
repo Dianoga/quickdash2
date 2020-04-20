@@ -3,6 +3,7 @@ import { MuuriComponent } from 'muuri-react';
 
 import './dashboard.scss';
 import Widget from '../widgets/widget';
+import PageLayout from '../utility/page.layout';
 
 const Dashboard: React.FC = () => {
 	const [widgets, setWidgets] = useState([
@@ -56,9 +57,11 @@ const Dashboard: React.FC = () => {
 	};
 
 	return (
-		<section className="dashboard">
-			<MuuriComponent {...layoutOptions}>{children}</MuuriComponent>
-		</section>
+		<PageLayout>
+			<section className="dashboard">
+				<MuuriComponent {...layoutOptions}>{children}</MuuriComponent>
+			</section>
+		</PageLayout>
 	);
 };
 

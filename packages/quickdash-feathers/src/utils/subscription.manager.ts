@@ -24,6 +24,7 @@ export class SubscriptionManager {
 			>[];
 
 			try {
+				// @todo move this into Subscription
 				const resp = await fetch(
 					'https://api.smartthings.com/v1/subscriptions',
 					{

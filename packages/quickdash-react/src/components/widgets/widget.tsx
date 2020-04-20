@@ -1,4 +1,9 @@
-import React, { Suspense, lazy } from 'react';
+import React, {
+	Suspense,
+	lazy,
+	Profiler,
+	ProfilerOnRenderCallback,
+} from 'react';
 import { useData } from 'muuri-react';
 import TestWidget from './test.widget';
 
@@ -33,7 +38,12 @@ const Widget: React.FC<Props> = ({ widgetInfo: { type, ...widgetParams } }) => {
 		<div className="widget">
 			<div className="widget-content">
 				<Suspense fallback={<div className="widget">Loading</div>}>
+					{/* <Profiler
+						id={JSON.stringify({ type, ...widgetParams })}
+						onRender={console.log}
+					> */}
 					{widget}
+					{/* </Profiler> */}
 				</Suspense>
 			</div>
 		</div>
