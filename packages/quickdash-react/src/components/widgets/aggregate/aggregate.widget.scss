@@ -11,7 +11,8 @@
 		height: calc(var(--base-widget-height) * 0.75);
 		object-fit: contain;
 	}
+}
 
-	.warn-devices {
-	}
+.width-1 .warn-devices:not(:only-child) {
+	display: none;
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import WindowIcon from './window.icon';
+import MotionIcon from './motion.icon';
 
 export enum IconType {
 	WINDOW = 'WINDOW',
@@ -15,6 +16,8 @@ type Props = {
 const Icon: React.FC<Props> = ({ type, ...props }) => {
 	if (type === IconType.WINDOW) {
 		return <WindowIcon {...props} />;
+	} else if (type === IconType.MOTION) {
+		return <MotionIcon {...props} />;
 	}
 
 	return null;

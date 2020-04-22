@@ -34,6 +34,8 @@ const Dashboard: React.FC = () => {
 				capabilityId: 'motionSensor',
 				attributeName: 'motion',
 				warnValues: ['active'],
+				iconType: 'MOTION',
+				width: 2,
 			},
 		},
 		{
