@@ -16,7 +16,7 @@
 	.roof {
 		border-radius: 5px;
 		border-style: solid;
-		border-color: transparent transparent var(--buildingColor) transparent;
+		border-color: transparent transparent var(--building-color) transparent;
 		border-width: 0 calc(var(--roof-width) / 2) var(--roof-height);
 	}
 
@@ -24,7 +24,7 @@
 		box-shadow: inset 0px 5px 5px -5px var(--grey-dark);
 		width: var(--wall-width);
 		height: var(--wall-height);
-		background-color: var(--buildingColor);
+		background-color: var(--building-color);
 
 		display: flex;
 		justify-content: center;
@@ -42,7 +42,7 @@
 
 	.door {
 		box-shadow: inset 0px 5px 5px -5px var(--grey-dark);
-		background: var(--buildingColor);
+		background: var(--building-color);
 		width: 100%;
 		height: 100%;
 

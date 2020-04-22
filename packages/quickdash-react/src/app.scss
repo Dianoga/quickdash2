@@ -13,7 +13,12 @@
 	--warning: #{$warning};
 	--white: #{$white};
 
-	--buildingColor: #{$buildingColor};
+	--building-color: #{$building-color};
+
+	// Widget settings
+	--base-widget-width: 150px;
+	--base-widget-height: 150px;
+	--widget-margin: 5px;
 }
 
 html,

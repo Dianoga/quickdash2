@@ -24,6 +24,7 @@ const Dashboard: React.FC = () => {
 				attributeName: 'contact',
 				iconType: 'WINDOW',
 				warnValues: ['open'],
+				width: 2,
 			},
 		},
 		{

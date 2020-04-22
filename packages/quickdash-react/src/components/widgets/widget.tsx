@@ -5,6 +5,8 @@ import React, {
 	ProfilerOnRenderCallback,
 } from 'react';
 import { useData } from 'muuri-react';
+import classnames from 'classnames';
+
 import TestWidget from './test.widget';
 
 const DoorControl = lazy(() => import('./doorcontrol'));
@@ -19,10 +21,14 @@ enum WidgetType {
 type Props = {
 	widgetInfo: {
 		type: WidgetType;
+		width?: number;
+		height?: number;
 	} & any;
 };
 
-const Widget: React.FC<Props> = ({ widgetInfo: { type, ...widgetParams } }) => {
+const Widget: React.FC<Props> = ({
+	widgetInfo: { type, width = 1, height = 1, ...widgetParams },
+}) => {
 	useData({ type });
 
 	let widget = <p>Unimplemented</p>;
@@ -34,8 +40,14 @@ const Widget: React.FC<Props> = ({ widgetInfo: { type, ...widgetParams } }) => {
 		widget = <Aggregate {...widgetParams} />;
 	}
 
+	const widgetClasses = classnames([
+		'widget',
+		`width-${width}`,
+		`height-${height}`,
+	]);
+
 	return (
-		<div className="widget">
+		<div className={widgetClasses}>
 			<div className="widget-content">
 				<Suspense fallback={<div className="widget">Loading</div>}>
 					{/* <Profiler

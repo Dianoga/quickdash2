@@ -16,6 +16,7 @@ const WindowIcon: React.FC<Props> = ({ className }) => {
 			viewBox="0 0 150 200"
 			className={classes}
 			stroke="white"
+			fill="none"
 			fillOpacity="0.1"
 		>
 			<defs>

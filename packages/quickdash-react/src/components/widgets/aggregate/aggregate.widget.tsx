@@ -40,8 +40,17 @@ const Aggregate: React.FC<Props> = ({
 	const statuses = useDeviceStatuses(deviceStatusFilter);
 
 	let warnStatuses: DeviceStatusData[] = [];
+	let warnDevices: DeviceData[] = [];
 	statuses.forEach((status) => {
-		if (warnValues.includes(status.value)) warnStatuses.push(status);
+		if (warnValues.includes(status.value)) {
+			warnStatuses.push(status);
+			devices.find((device) => {
+				if (device.deviceId === status.deviceId) {
+					warnDevices.push(device);
+					return true;
+				}
+			});
+		}
 	});
 
 	const classes = classnames('aggregate', { warn: warnValues.length > 0 });
@@ -55,6 +64,8 @@ const Aggregate: React.FC<Props> = ({
 			</div>
 		);
 	}
+
+	console.log(warnDevices);
 
 	const iconClasses = classnames({ warn: warnValues.length > 0 });
 	return (
