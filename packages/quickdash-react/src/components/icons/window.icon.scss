@@ -1,0 +1,24 @@
+.window.icon {
+	stroke: var(--buildingColor);
+	fill: #000;
+	fill-opacity: 0.05;
+
+	.window-bg {
+		fill: transparent;
+		transition: fill 400ms;
+	}
+
+	.window-bottom {
+		transition: transform 400ms;
+	}
+
+	&.warn {
+		.window-bg {
+			fill: var(--warning);
+		}
+
+		.window-bottom {
+			transform: translate(0, -35%);
+		}
+	}
+}

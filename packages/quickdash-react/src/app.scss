@@ -7,6 +7,15 @@
 @import '~bulma/sass/components/_all.sass';
 @import '~bulma/sass/form/_all.sass';
 
+:root {
+	--background: #{$background};
+	--grey-dark: #{$grey-dark};
+	--warning: #{$warning};
+	--white: #{$white};
+
+	--buildingColor: #{$buildingColor};
+}
+
 html,
 body {
 	background: $background;

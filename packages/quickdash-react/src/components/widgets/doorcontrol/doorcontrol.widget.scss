@@ -1,5 +1,3 @@
-@import '../../../styles/settings';
-
 .door-control {
 	width: 100%;
 	height: 100%;
@@ -18,15 +16,15 @@
 	.roof {
 		border-radius: 5px;
 		border-style: solid;
-		border-color: transparent transparent $buildingColor transparent;
+		border-color: transparent transparent var(--buildingColor) transparent;
 		border-width: 0 calc(var(--roof-width) / 2) var(--roof-height);
 	}
 
 	.walls {
-		box-shadow: inset 0px 5px 5px -5px $grey-dark;
+		box-shadow: inset 0px 5px 5px -5px var(--grey-dark);
 		width: var(--wall-width);
 		height: var(--wall-height);
-		background-color: $buildingColor;
+		background-color: var(--buildingColor);
 
 		display: flex;
 		justify-content: center;
@@ -36,15 +34,15 @@
 	.hole {
 		width: calc(var(--wall-width) * 0.7);
 		height: calc(var(--wall-height) * 0.6);
-		background: $warning;
-		border: 3px solid $white;
+		background: var(--warning);
+		border: 3px solid var(--white);
 		border-bottom: 0;
-		box-shadow: inset 0px 5px 5px -5px $grey-dark;
+		box-shadow: inset 0px 5px 5px -5px var(--grey-dark);
 	}
 
 	.door {
-		box-shadow: inset 0px 5px 5px -5px $grey-dark;
-		background: $buildingColor;
+		box-shadow: inset 0px 5px 5px -5px var(--grey-dark);
+		background: var(--buildingColor);
 		width: 100%;
 		height: 100%;
 

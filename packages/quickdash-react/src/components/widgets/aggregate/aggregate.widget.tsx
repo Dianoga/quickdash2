@@ -39,7 +39,6 @@ const Aggregate: React.FC<Props> = ({
 	);
 	const statuses = useDeviceStatuses(deviceStatusFilter);
 
-	let valueCounts: { [status: string]: any } = {};
 	let warnStatuses: DeviceStatusData[] = [];
 	statuses.forEach((status) => {
 		if (warnValues.includes(status.value)) warnStatuses.push(status);

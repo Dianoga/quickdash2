@@ -2,6 +2,8 @@ import React from 'react';
 import classnames from 'classnames';
 import { ClassValue } from 'classnames/types';
 
+import('./window.icon.scss');
+
 type Props = {
 	className: ClassValue;
 };
