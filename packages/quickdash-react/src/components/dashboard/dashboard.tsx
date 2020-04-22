@@ -13,6 +13,7 @@ const Dashboard: React.FC = () => {
 				type: 'AGGREGATE',
 				capabilityId: 'switch',
 				attributeName: 'switch',
+				warnValues: ['on'],
 			},
 		},
 		{
@@ -21,6 +22,8 @@ const Dashboard: React.FC = () => {
 				type: 'AGGREGATE',
 				capabilityId: 'contactSensor',
 				attributeName: 'contact',
+				iconType: 'WINDOW',
+				warnValues: ['open'],
 			},
 		},
 		{
@@ -29,6 +32,7 @@ const Dashboard: React.FC = () => {
 				type: 'AGGREGATE',
 				capabilityId: 'motionSensor',
 				attributeName: 'motion',
+				warnValues: ['active'],
 			},
 		},
 		{

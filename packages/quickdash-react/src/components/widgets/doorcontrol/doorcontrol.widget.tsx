@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import classnames from 'classnames';
 
+import { useDeviceStatuses } from '../../../utils/device.hooks';
+
 import './doorcontrol.widget.scss';
-import { useDeviceStatuses } from '../../utils/device.hooks';
 
 export type DoorControlProps = {
 	deviceId: string;

@@ -7,8 +7,8 @@ import React, {
 import { useData } from 'muuri-react';
 import TestWidget from './test.widget';
 
-const DoorControl = lazy(() => import('./doorcontrol.widget'));
-const Aggregate = lazy(() => import('./aggregate.widget'));
+const DoorControl = lazy(() => import('./doorcontrol'));
+const Aggregate = lazy(() => import('./aggregate'));
 
 enum WidgetType {
 	DOOR_CONTROL = 'DOOR_CONTROL',
