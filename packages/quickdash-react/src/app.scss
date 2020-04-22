@@ -1,29 +1,49 @@
-@import 'styles/settings';
+@import '~bulma/sass/utilities/_all.sass';
 
 @import '~bulma/sass/base/_all.sass';
-@import '~bulma/sass/layout/_all.sass';
-@import '~bulma/sass/grid/_all.sass';
-@import '~bulma/sass/elements/_all.sass';
-@import '~bulma/sass/components/_all.sass';
+@import '~bulma/sass/layout/section.sass';
+@import '~bulma/sass/elements/button.sass';
+@import '~bulma/sass/elements/title.sass';
+@import '~bulma/sass/components/navbar.sass';
 @import '~bulma/sass/form/_all.sass';
 
 :root {
 	--background: #{$background};
-	--grey-dark: #{$grey-dark};
+	--border: #{$border};
 	--warning: #{$warning};
+
+	--grey-dark: #{$grey-dark};
+	--grey-light: #{$grey-light};
+	--grey-lighter: #{$grey-lighter};
+	--white-ter: #{$white-ter};
+	--white-bis: #{$white-bis};
 	--white: #{$white};
 
-	--building-color: #{$building-color};
+	--building-color: var(--grey-light);
 
 	// Widget settings
 	--base-widget-width: 150px;
 	--base-widget-height: 150px;
 	--widget-margin: 5px;
+	--widget-background: var(--white-bis);
+	--widget-text: var(--grey-dark);
+}
+
+@media (prefers-color-scheme: darkk) {
+	:root {
+		--background: #{invert($background)};
+		--border: #{invert($border)};
+		--warning: #{darken($warning, 25%)};
+
+		--building-color: var(--grey-light);
+		--widget-background: var(--grey-dark);
+		--widget-text: var(--white-ter);
+	}
 }
 
 html,
 body {
-	background: $background;
+	background: var(--background);
 }
 
 pre {

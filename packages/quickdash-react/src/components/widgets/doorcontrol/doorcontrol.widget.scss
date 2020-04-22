@@ -8,10 +8,10 @@
 	align-items: center;
 	// position: relative;
 
-	--roof-width: var(--widget-width);
+	--roof-width: calc(var(--widget-width) * 0.8);
 	--roof-height: calc(var(--widget-height) * 0.25);
-	--wall-width: calc(var(--widget-width) * 0.8);
-	--wall-height: calc(var(--widget-height) - var(--widget-height) * 0.25);
+	--wall-width: calc(var(--widget-width) * 0.6);
+	--wall-height: calc(var(--widget-height) * 0.75 - var(--widget-height) * 0.3);
 
 	.roof {
 		border-radius: 5px;
@@ -32,8 +32,8 @@
 	}
 
 	.hole {
-		width: calc(var(--wall-width) * 0.7);
-		height: calc(var(--wall-height) * 0.6);
+		width: calc(var(--wall-width) * 0.75);
+		height: calc(var(--wall-height) * 0.7);
 		background: var(--warning);
 		border: 3px solid var(--white);
 		border-bottom: 0;

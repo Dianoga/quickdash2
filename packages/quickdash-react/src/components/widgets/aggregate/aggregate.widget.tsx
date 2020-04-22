@@ -55,22 +55,20 @@ const Aggregate: React.FC<Props> = ({
 
 	const classes = classnames('aggregate', { warn: warnValues.length > 0 });
 
-	if (!iconType) {
-		return (
-			<div className={classes}>
-				Good: {statuses.length - warnStatuses.length}
-				<br />
-				Warn: {warnStatuses.length}
-			</div>
-		);
+	let warnDevicesEl;
+	if (warnDevices.length > 0) {
+		let status = warnDevices[0].displayName;
+		if (warnDevices.length > 1) {
+			status += ` and ${warnDevices.length - 1} others`;
+		}
+		warnDevicesEl = <div className="warn-devices">{status}</div>;
 	}
-
-	console.log(warnDevices);
 
 	const iconClasses = classnames({ warn: warnValues.length > 0 });
 	return (
 		<div className={classes}>
-			<Icon className={iconClasses} type={iconType} />
+			{iconType && <Icon className={iconClasses} type={iconType} />}
+			{warnDevicesEl}
 		</div>
 	);
 };
