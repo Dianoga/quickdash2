@@ -1,4 +1,5 @@
 import EventSource from 'eventsource';
+import fetch from 'node-fetch';
 
 import { Application } from '../declarations';
 import { SpigotEvent } from '../typings/events';
@@ -35,24 +36,34 @@ export enum EventType {
 }
 
 export class Subscription {
+	private url: string | undefined;
 	private logger: any;
 	private es: EventSource | undefined;
 	private reconnectTimeout: NodeJS.Timeout | undefined;
 
+	private subscribeAttempts: number;
+	private subscribeMaxAttempts: number;
+
+	public stillAlive: boolean;
+
 	constructor(
-		private url: string,
 		private token: string,
 		private app: Application,
 		private userId: string,
+		private subscriptionFilters: any,
 		logger = console
 	) {
 		this.logger = logger;
+
+		this.subscribeAttempts = 0;
+		this.subscribeMaxAttempts = 10;
+		this.stillAlive = true;
 
 		if (!userId) throw new Error('Missing user id');
 
 		this.handleEvent = this.handleEvent.bind(this);
 		this.reconnect = this.reconnect.bind(this);
-		this.connect();
+		this.subscribe();
 	}
 
 	attachHandlers(es: EventSource) {
@@ -77,13 +88,59 @@ export class Subscription {
 		 * This usually happens when it's been 5 minutes without an event. In that case
 		 * spigot will close the connection and EventSource will auto-reconnect.
 		 */
-		es.onerror = (e) => {
+		es.onerror = (e: any) => {
 			this.logger.error('Spigot:error', e);
-			// @todo Handle 403 error { type: 'error', status: 403, message: 'Forbidden' }
+			if (e.status === 403) {
+				this.subscribe();
+			}
 		};
 	}
 
+	async subscribe() {
+		if (this.subscribeAttempts > this.subscribeMaxAttempts) {
+			this.stillAlive = false;
+			console.error(new Error('Max subscription attempts exceeded'));
+			return;
+		}
+
+		if (this.subscribeAttempts > 0) {
+			const waitTime = 2 ^ this.subscribeAttempts;
+			this.subscribeAttempts++;
+			await new Promise((resolve) => {
+				setTimeout(resolve, waitTime * 1000);
+			});
+		}
+
+		try {
+			const resp = await fetch('https://api.smartthings.com/v1/subscriptions', {
+				method: 'POST',
+				headers: {
+					Authorization: `Bearer ${this.token}`,
+				},
+				body: JSON.stringify({
+					name: 'quickdash-feathers',
+					version: 1,
+					subscriptionFilters: this.subscriptionFilters,
+				}),
+			});
+
+			const { registrationUrl, ...responseData } = await resp.json();
+
+			if (responseData.error) {
+				throw responseData.error;
+			}
+
+			this.url = registrationUrl;
+			this.connect();
+			this.subscribeAttempts = 0;
+		} catch (e) {
+			console.error('Unable to setup subscription', e);
+		}
+	}
+
 	connect() {
+		if (!this.url) throw Error('Missing URL');
+
 		this.es = new EventSource(this.url, {
 			headers: { Authorization: `Bearer ${this.token}` },
 		});

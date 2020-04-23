@@ -1,5 +1,3 @@
-import fetch from 'node-fetch';
-
 import { Subscription } from './subscription';
 import { Application } from '../declarations';
 import { LocationData } from '../services/locations/locations.class';
@@ -10,7 +8,7 @@ export class SubscriptionManager {
 	constructor(private app: Application) {}
 
 	async subscribe(userId: string) {
-		if (!this.subscriptions[userId]) {
+		if (!this.subscriptions[userId] || !this.subscriptions[userId].stillAlive) {
 			const user = await this.app.service('api/users').get(userId);
 			const token = user.smartthingsSubscribeToken;
 
@@ -23,43 +21,18 @@ export class SubscriptionManager {
 				'locationId'
 			>[];
 
-			try {
-				// @todo move this into Subscription
-				const resp = await fetch(
-					'https://api.smartthings.com/v1/subscriptions',
-					{
-						method: 'POST',
-						headers: {
-							Authorization: `Bearer ${token}`,
-						},
-						body: JSON.stringify({
-							name: 'quickdash-feathers',
-							version: 1,
-							subscriptionFilters: [
-								{
-									type: 'LOCATIONIDS',
-									value: locations.map((l) => l.locationId),
-								},
-							],
-						}),
-					}
-				);
-
-				const { registrationUrl, ...responseData } = await resp.json();
-
-				if (responseData.error) {
-					throw responseData.error;
-				}
-
-				this.subscriptions[userId] = new Subscription(
-					registrationUrl,
-					token,
-					this.app,
-					userId
-				);
-			} catch (e) {
-				console.error('Unable to setup subscription', e);
-			}
+			const subscriptionFilters = [
+				{
+					type: 'LOCATIONIDS',
+					value: locations.map((l) => l.locationId),
+				},
+			];
+			this.subscriptions[userId] = new Subscription(
+				token,
+				this.app,
+				userId,
+				subscriptionFilters
+			);
 		}
 
 		return this.subscriptions[userId];
