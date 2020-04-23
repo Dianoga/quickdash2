@@ -7,6 +7,7 @@
 @import '~bulma/sass/elements/title.sass';
 @import '~bulma/sass/elements/notification.sass';
 @import '~bulma/sass/components/navbar.sass';
+@import '~bulma/sass/components/modal.sass';
 @import '~bulma/sass/form/_all.sass';
 
 :root {
@@ -50,4 +51,28 @@ body {
 
 pre {
 	padding: 0;
+}
+
+.ReactModal__Body--open {
+	@extend .is-clipped;
+}
+
+.ReactModalPortal {
+	@extend .modal;
+	@extend .is-active;
+}
+
+.ReactModal__Overlay {
+	@extend .modal-background;
+
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	justify-content: center;
+	overflow: hidden;
+	position: fixed;
+}
+
+.ReactModal__Content {
+	@extend .modal-content;
 }

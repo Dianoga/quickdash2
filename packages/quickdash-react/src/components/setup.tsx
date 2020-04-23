@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 
 import { RootState } from '../store';
@@ -7,8 +7,6 @@ import { RootState } from '../store';
 type Props = {};
 
 const Setup: React.FC<Props> = () => {
-	const dispatch = useDispatch();
-
 	const defaultDashboard = useSelector(
 		(state: RootState) => Object.keys(state.dashboard.dashboards)?.[0]
 	);

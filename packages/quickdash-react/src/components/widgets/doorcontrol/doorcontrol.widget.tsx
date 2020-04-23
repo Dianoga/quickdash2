@@ -4,16 +4,18 @@ import classnames from 'classnames';
 import { useDeviceStatuses } from '../../../utils/device.hooks';
 
 import './doorcontrol.widget.scss';
+import { DeviceComponentId } from '../../../typings/global';
+import { extractDeviceComponentId } from '../../../utils/device.utils';
+import { WidgetSettingsChildProps } from '../widget.settings';
 
 export type DoorControlProps = {
-	deviceId: string;
+	deviceComponentId: DeviceComponentId;
 };
 
-const DoorControl: React.FC<DoorControlProps> = ({ deviceId }) => {
+const DoorControl: React.FC<DoorControlProps> = ({ deviceComponentId }) => {
 	const [status] = useDeviceStatuses([
 		{
-			deviceId: deviceId,
-			componentId: 'main',
+			...extractDeviceComponentId(deviceComponentId),
 			capabilityId: 'doorControl',
 			attributeName: 'door',
 		},

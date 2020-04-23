@@ -5,7 +5,7 @@ import { RootState } from '../../store';
 import { updateUserProfile, User } from '../../store/user.slice';
 import UserActions from './actions';
 import PageLayout from '../utility/page.layout';
-import { Input, Button } from '../elements';
+import { Input, Button, Field } from '../elements';
 
 const Profile: React.FC = () => {
 	const { user } = useSelector((state: RootState) => state.user);
@@ -38,19 +38,24 @@ const Profile: React.FC = () => {
 				<h2 className="subtitle">Settings</h2>
 				<div className="container">
 					<form onSubmit={handleSubmit}>
-						<Input
-							type="text"
-							label="SmartThings token"
-							value={smartthingsToken}
-							onChange={(evt) => setSmartthingsToken(evt.target.value)}
-						/>
+						<Field label="SmartThings token">
+							{' '}
+							<Input
+								type="text"
+								value={smartthingsToken}
+								onChange={(evt) => setSmartthingsToken(evt.target.value)}
+							/>
+						</Field>
 
-						<Input
-							label="SmartThings subscribe token"
-							type="text"
-							value={smartthingsSubscribeToken}
-							onChange={(evt) => setSmartthingsSubscribeToken(evt.target.value)}
-						/>
+						<Field label="SmartThings subscribe token">
+							<Input
+								type="text"
+								value={smartthingsSubscribeToken}
+								onChange={(evt) =>
+									setSmartthingsSubscribeToken(evt.target.value)
+								}
+							/>
+						</Field>
 						<Button control={true} extraClasses="is-success">
 							Update profile
 						</Button>

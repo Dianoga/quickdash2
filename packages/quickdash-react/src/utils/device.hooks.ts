@@ -6,7 +6,7 @@ import { DeviceStatusData } from '../store/device-status.slice';
 import { RootState } from '../store';
 import { DeviceData } from '../store/device.slice';
 
-type DeviceFilter = {
+export type DeviceFilter = {
 	deviceFilter?: Partial<DeviceData>[];
 	capabilityFilter?: string[];
 };

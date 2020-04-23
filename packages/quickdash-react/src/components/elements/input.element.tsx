@@ -7,35 +7,8 @@ type Props = {
 	horizontal?: boolean;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
-const Input: React.FC<Props> = ({
-	horizontal = false,
-	label,
-	type = 'text',
-	...inputProps
-}) => {
-	if (horizontal) {
-		return (
-			<div className="field is-horizontal">
-				<div className="field-label">
-					<label className="label">{label}</label>
-				</div>
-				<div className="field-body">
-					<div className="control">
-						<input className="input" type={type} {...inputProps} />
-					</div>
-				</div>
-			</div>
-		);
-	}
-
-	return (
-		<div className="field">
-			<label className="label">{label}</label>
-			<div className="control">
-				<input className="input" type={type} {...inputProps} />
-			</div>
-		</div>
-	);
+const Input: React.FC<Props> = ({ type = 'text', ...inputProps }) => {
+	return <input className="input" type={type} {...inputProps} />;
 };
 
 export default Input;

@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import Login from './components/user/login';
 import { useSelector, useDispatch } from 'react-redux';
 import { Navigate, Routes, Route } from 'react-router-dom';
+import ReactModal from 'react-modal';
 
 import Profile from './components/user/profile';
 import Setup from './components/setup';
@@ -14,6 +15,10 @@ import { fetchDashboards } from './store/dashboard.slice';
 
 import './app.scss';
 
+ReactModal.defaultStyles.content = {};
+ReactModal.defaultStyles.overlay = {};
+ReactModal.setAppElement('body');
+
 function App() {
 	const { user, loading } = useSelector((state: RootState) => state.user);
 
@@ -24,7 +29,7 @@ function App() {
 			dispatch(fetchDevices());
 			dispatch(fetchDeviceStatuses());
 		}
-	}, [user]);
+	}, [user, dispatch]);
 
 	return (
 		<div className="app">
@@ -32,9 +37,9 @@ function App() {
 				{user && (
 					<>
 						<Route path="/user/profile" element={<Profile />} />
-						<Route path="/dashboard/:dashboardId" element={<Dashboard />} />
+						<Route path="/dashboard/:dashboardId/*" element={<Dashboard />} />
 						<Route path="/" element={<Setup />} />
-						{/* <Route path="*" element={<Navigate to="/" />} /> */}
+						<Route path="*" element={<Navigate to="/" />} />
 					</>
 				)}
 				{!user && !loading && <Route path="*" element={<Login />} />}
