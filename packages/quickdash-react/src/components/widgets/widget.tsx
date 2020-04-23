@@ -8,22 +8,13 @@ import { useData } from 'muuri-react';
 import classnames from 'classnames';
 
 import TestWidget from './test.widget';
+import { WidgetData, WidgetType } from '../../store/dashboard.slice';
 
 const DoorControl = lazy(() => import('./doorcontrol'));
 const Aggregate = lazy(() => import('./aggregate'));
 
-enum WidgetType {
-	DOOR_CONTROL = 'DOOR_CONTROL',
-	AGGREGATE = 'AGGREGATE',
-	TEST = 'TEST',
-}
-
 type Props = {
-	widgetInfo: {
-		type: WidgetType;
-		width?: number;
-		height?: number;
-	} & any;
+	widgetInfo: WidgetData;
 };
 
 const Widget: React.FC<Props> = ({
@@ -32,9 +23,7 @@ const Widget: React.FC<Props> = ({
 	useData({ type });
 
 	let widget = <p>Unimplemented</p>;
-	if (type === WidgetType.TEST) {
-		widget = <TestWidget {...widgetParams} />;
-	} else if (type === WidgetType.DOOR_CONTROL) {
+	if (type === WidgetType.DOOR_CONTROL) {
 		widget = <DoorControl {...widgetParams} />;
 	} else if (type === WidgetType.AGGREGATE) {
 		widget = <Aggregate {...widgetParams} />;

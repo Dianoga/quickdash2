@@ -1,5 +1,6 @@
 import * as feathersAuthentication from '@feathersjs/authentication';
 import * as local from '@feathersjs/authentication-local';
+import createDashboard from '../../hooks/create-dashboard';
 // Don't remove this comment. It's needed to format import lines nicely.
 
 const { authenticate } = feathersAuthentication.hooks;
@@ -24,7 +25,7 @@ export default {
 		],
 		find: [],
 		get: [],
-		create: [],
+		create: [createDashboard()],
 		update: [],
 		patch: [],
 		remove: [],

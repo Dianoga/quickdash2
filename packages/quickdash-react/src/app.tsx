@@ -4,13 +4,15 @@ import Login from './components/user/login';
 import { useSelector, useDispatch } from 'react-redux';
 import { Navigate, Routes, Route } from 'react-router-dom';
 
-import './app.scss';
 import Profile from './components/user/profile';
-import UserActions from './components/user/actions';
-import { RootState } from './store';
+import Setup from './components/setup';
 import Dashboard from './components/dashboard/dashboard';
+import { RootState } from './store';
 import { fetchDevices } from './store/device.slice';
 import { fetchDeviceStatuses } from './store/device-status.slice';
+import { fetchDashboards } from './store/dashboard.slice';
+
+import './app.scss';
 
 function App() {
 	const { user, loading } = useSelector((state: RootState) => state.user);
@@ -18,6 +20,7 @@ function App() {
 	const dispatch = useDispatch();
 	useEffect(() => {
 		if (user) {
+			dispatch(fetchDashboards());
 			dispatch(fetchDevices());
 			dispatch(fetchDeviceStatuses());
 		}
@@ -29,8 +32,9 @@ function App() {
 				{user && (
 					<>
 						<Route path="/user/profile" element={<Profile />} />
-						<Route path="/" element={<Dashboard />} />
-						<Route path="*" element={<Navigate to="/" />} />
+						<Route path="/dashboard/:dashboardId" element={<Dashboard />} />
+						<Route path="/" element={<Setup />} />
+						{/* <Route path="*" element={<Navigate to="/" />} /> */}
 					</>
 				)}
 				{!user && !loading && <Route path="*" element={<Login />} />}
