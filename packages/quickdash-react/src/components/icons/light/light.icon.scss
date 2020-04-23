@@ -1,0 +1,16 @@
+.light.icon {
+	stroke: var(--building-color);
+	margin: 0 5px;
+
+	.bulb {
+		fill-opacity: 1;
+		fill: transparent;
+		transition: fill 400ms;
+	}
+
+	&.warn {
+		.bulb {
+			fill: var(--warning);
+		}
+	}
+}

@@ -14,6 +14,8 @@ const Dashboard: React.FC = () => {
 				capabilityId: 'switch',
 				attributeName: 'switch',
 				warnValues: ['on'],
+				iconType: 'LIGHT',
+				width: 2,
 			},
 		},
 		{
@@ -22,8 +24,8 @@ const Dashboard: React.FC = () => {
 				type: 'AGGREGATE',
 				capabilityId: 'contactSensor',
 				attributeName: 'contact',
-				iconType: 'WINDOW',
 				warnValues: ['open'],
+				iconType: 'WINDOW',
 				width: 2,
 			},
 		},
@@ -52,6 +54,7 @@ const Dashboard: React.FC = () => {
 	});
 
 	const layoutOptions = {
+		layout: { fillGaps: true },
 		dragEnabled: false,
 		dragContainer: document.body,
 		// The placeholder of an item that is being dragged.
