@@ -23,9 +23,9 @@ const DevicePicker: React.FC<Props> = ({
 	deviceFilter,
 	multiple = true,
 	onDevicePick,
-	value = '',
+	value,
 }) => {
-	const devices = useDevices(deviceFilter);
+	const devices = useDevices(deviceFilter, true);
 
 	const options: React.ReactNode[] = [];
 	devices.forEach((device) => {
@@ -52,7 +52,7 @@ const DevicePicker: React.FC<Props> = ({
 		<Select
 			multiple={multiple}
 			onSelected={handleChange}
-			placeholder="Choose device"
+			placeholder={multiple ? undefined : 'Choose device'}
 			value={value}
 		>
 			{options}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactModal from 'react-modal';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -49,6 +49,11 @@ const WidgetSettings: React.FC<Props> = ({ isNew = false }) => {
 
 	const [widget, setWidget] = useState(originalWidget);
 
+	// This allows for loading and such
+	useEffect(() => {
+		setWidget(originalWidget);
+	}, [originalWidget]);
+
 	let header = isNew ? 'Create widget' : 'Update widget';
 	let widgetTypePicker;
 
@@ -64,9 +69,8 @@ const WidgetSettings: React.FC<Props> = ({ isNew = false }) => {
 			<Field label="Widget type">
 				<Select
 					value={widget.type}
-					onChange={(event) => {
-						const type = event.target.value as WidgetType;
-						// @ts-ignore: I don't know why typescript doesn't like this
+					onSelected={(type) => {
+						// @ts-ignore: You can trust me on this :D
 						setWidget({ ...widget, type });
 					}}
 				>
@@ -115,6 +119,10 @@ const WidgetSettings: React.FC<Props> = ({ isNew = false }) => {
 		if (isNew) {
 			widget.id = createWidgetId(widgets);
 			widgets.push(widget);
+		} else {
+			const i = widgets.findIndex((w) => w.id === widget.id);
+			if (i >= 0) widgets[i] = widget;
+			else console.error('Widget not found to update');
 		}
 
 		try {

@@ -1,22 +1,37 @@
 import React from 'react';
 import classnames from 'classnames';
 
-import { useDevices, useDeviceStatuses } from '../../../utils/device.hooks';
+import {
+	useDevices,
+	useDeviceStatuses,
+	DeviceComponentId,
+} from '../../../utils/device.hooks';
 import { DeviceData } from '../../../store/device.slice';
 import { DeviceStatusData } from '../../../store/device-status.slice';
 import Icon, { IconType } from '../../icons';
 
+import type { BaseWidgetData } from '../widget';
+
 import './aggregate.widget.scss';
+
+export interface AggregateData extends BaseWidgetData {
+	type: 'AGGREGATE';
+	capabilityId: string;
+	attributeName: string;
+	deviceComponentIds?: DeviceComponentId[];
+	iconType?: IconType;
+	warnValues: string[];
+}
 
 const Aggregate: React.FC<AggregateData> = ({
 	attributeName,
 	capabilityId,
-	deviceFilter = [],
+	deviceComponentIds,
 	iconType,
 	warnValues = [],
 }) => {
 	const devices = useDevices({
-		deviceFilter,
+		deviceComponentIds,
 		capabilityFilter: [capabilityId],
 	});
 
@@ -36,11 +51,13 @@ const Aggregate: React.FC<AggregateData> = ({
 	statuses.forEach((status) => {
 		if (warnValues.includes(status.value)) {
 			warnStatuses.push(status);
-			devices.find((device) => {
+			devices.some((device) => {
 				if (device.deviceId === status.deviceId) {
 					warnDevices.push(device);
 					return true;
 				}
+
+				return false;
 			});
 		}
 	});
