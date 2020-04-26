@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import ReactModal from 'react-modal';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 
 import { patchDashboard } from '../../store/dashboard.slice';
 import { Field, Select } from '../elements';
@@ -29,29 +29,35 @@ export type WidgetSettingsChildProps = {
 
 const WidgetSettings: React.FC<Props> = ({ isNew = false }) => {
 	const { dashboardId, widgetId } = useParams();
-	const { dashboard, originalWidget } = useSelector((state: RootState) => {
-		const dashboard = state.dashboard.dashboards[dashboardId];
 
+	const dashboard = useSelector(
+		(state: RootState) => state.dashboard.dashboards[dashboardId]
+	);
+
+	// Memoize this so we don't infinite loop rendering a new widget dialog
+	const newWidget: WidgetData = useMemo(() => {
+		const id = createWidgetId(dashboard?.widgets || []);
+		return { id, type: '', width: '1', height: '1' };
+	}, [dashboard]);
+
+	const originalWidget = useSelector((state: RootState) => {
 		let originalWidget: WidgetData;
-		if (!isNew) {
+
+		if (!isNew)
 			// @ts-ignore: This may return undefined. That's fine, we'll fix it later
 			originalWidget = dashboard?.widgets?.find((w) => w.id === widgetId);
-		}
 
 		// @ts-ignore: We know it might not be defined. That's the point
-		if (!originalWidget) {
-			const id = createWidgetId(dashboard?.widgets || []);
-			originalWidget = { id, type: '' };
-		}
+		if (!originalWidget) originalWidget = newWidget;
 
-		return { dashboard, originalWidget };
-	});
+		return originalWidget;
+	}, shallowEqual);
 
-	const [widget, setWidget] = useState(originalWidget);
+	const [widget, setWidget] = useState({ ...originalWidget });
 
 	// This allows for loading and such
 	useEffect(() => {
-		setWidget(originalWidget);
+		setWidget({ ...originalWidget });
 	}, [originalWidget]);
 
 	let header = isNew ? 'Create widget' : 'Update widget';
@@ -82,7 +88,6 @@ const WidgetSettings: React.FC<Props> = ({ isNew = false }) => {
 	}
 
 	const handleChange: WidgetOnChange = (data) => {
-		console.log('New widget settings', data);
 		setWidget(data);
 	};
 
@@ -140,6 +145,36 @@ const WidgetSettings: React.FC<Props> = ({ isNew = false }) => {
 				<section className="modal-card-body">
 					{widgetTypePicker}
 					{widgetSettings}
+
+					{widget.type && (
+						<Field label="Size">
+							<Field className="is-grouped">
+								<Select
+									value={widget.width}
+									onSelected={(value) =>
+										handleChange({ ...widget, width: value as string })
+									}
+								>
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+								</Select>
+								<Select
+									value={widget.height}
+									onSelected={(value) =>
+										handleChange({ ...widget, height: value as string })
+									}
+								>
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+								</Select>
+								<p className="help">Width / Height</p>
+							</Field>
+						</Field>
+					)}
 				</section>
 				<footer className="modal-card-foot">
 					{widget && (

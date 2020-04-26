@@ -77,3 +77,9 @@ pre {
 .ReactModal__Content {
 	@extend .modal-content;
 }
+
+.field.is-grouped .control {
+	.select:not(:first-child) {
+		margin-left: 1em;
+	}
+}

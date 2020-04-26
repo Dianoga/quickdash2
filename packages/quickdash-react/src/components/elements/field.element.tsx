@@ -1,14 +1,29 @@
 import React from 'react';
+import classnames from 'classnames';
+
+import type { ClassValue } from 'classnames/types';
 
 type Props = React.PropsWithChildren<{
+	className?: ClassValue;
 	label?: string;
 	horizontal?: boolean;
 }>;
 
-const Field: React.FC<Props> = ({ children, horizontal = false, label }) => {
+const Field: React.FC<Props> = ({
+	children,
+	className,
+	horizontal = false,
+	label,
+}) => {
+	const fieldClasses = classnames(
+		'field',
+		{ 'is-horizontal': horizontal },
+		className
+	);
+
 	if (horizontal) {
 		return (
-			<div className="field is-horizontal">
+			<div className={fieldClasses}>
 				<div className="field-label">
 					<label className="label">{label}</label>
 				</div>
@@ -20,7 +35,7 @@ const Field: React.FC<Props> = ({ children, horizontal = false, label }) => {
 	}
 
 	return (
-		<div className="field">
+		<div className={fieldClasses}>
 			<label className="label">{label}</label>
 			<div className="control">{children}</div>
 		</div>

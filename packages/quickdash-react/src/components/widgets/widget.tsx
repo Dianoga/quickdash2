@@ -12,8 +12,8 @@ export type WidgetType = 'DOOR_CONTROL' | 'AGGREGATE' | '';
 
 export interface BaseWidgetData {
 	id: string;
-	width?: number;
-	height?: number;
+	width: string;
+	height: string;
 }
 
 export interface UnknownData extends BaseWidgetData {
@@ -25,7 +25,7 @@ export type WidgetData = UnknownData | DoorControlData | AggregateData;
 type Props = WidgetData;
 
 const Widget: React.FC<Props> = (widgetData) => {
-	const { id, type, width = 1, height = 1 } = widgetData;
+	const { id, type, width = '1', height = '1' } = widgetData;
 
 	let widget = <p>Unimplemented</p>;
 	if (type === 'DOOR_CONTROL') {
