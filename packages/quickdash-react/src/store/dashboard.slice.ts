@@ -2,17 +2,6 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import client from '../libs/feathers';
 
-export enum WidgetType {
-	DOOR_CONTROL = 'DOOR_CONTROL',
-	AGGREGATE = 'AGGREGATE',
-}
-
-export type WidgetData = {
-	type: WidgetType;
-	width?: number;
-	height?: number;
-} & any;
-
 export type DashboardData = {
 	widgets?: WidgetData[];
 	name: string;
@@ -32,6 +21,16 @@ export const createDashboard = createAsyncThunk(
 	'dashboard/createDashboard',
 	async (data: Pick<DashboardData, 'name'>) => {
 		const response = await client.service('api/dashboards').create(data);
+		return response;
+	}
+);
+
+type PatchDashboardArgs = { id: string; data: Partial<DashboardData> };
+
+export const patchDashboard = createAsyncThunk(
+	'dashboard/patchDashboard',
+	async ({ id, data }: PatchDashboardArgs) => {
+		const response = await client.service('api/dashboards').patch(id, data);
 		return response;
 	}
 );

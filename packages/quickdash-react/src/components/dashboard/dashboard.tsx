@@ -33,20 +33,14 @@ const Dashboard: React.FC = () => {
 		},
 	};
 
-	let contentEl;
-	if (!dashboard?.widgets) {
-		contentEl = (
-			<div className="empty">
-				<Link to="widget/new">Add widget</Link>
-			</div>
-		);
-	} else {
-		contentEl = <MuuriComponent {...layoutOptions}>{children}</MuuriComponent>;
-	}
-
 	return (
 		<PageLayout>
-			<section className="dashboard">{contentEl}</section>
+			<section className="dashboard">
+				<MuuriComponent {...layoutOptions}>{children}</MuuriComponent>
+				<div className="add-widget">
+					<Link to="widget/new">Add widget</Link>
+				</div>
+			</section>
 			<Routes>
 				<Route path="widget/:widgetId/settings" element={<WidgetSettings />} />
 				<Route path="widget/new" element={<WidgetSettings isNew={true} />} />

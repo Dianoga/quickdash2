@@ -1,50 +1,71 @@
 import React, { useState } from 'react';
 import ReactModal from 'react-modal';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { RootState } from '../../store';
-import { WidgetType } from '../../store/dashboard.slice';
+import { patchDashboard } from '../../store/dashboard.slice';
 import { Field, Select } from '../elements';
 import { DoorControlSettings } from './doorcontrol';
+import { createWidgetId } from '../../utils/helpers';
 
 type Props = {
 	isNew?: boolean;
 };
 
+const widgetTypes: { type: WidgetType; label: string }[] = [
+	{ type: 'DOOR_CONTROL', label: 'Door Control' },
+	{ type: 'AGGREGATE', label: 'Aggregate' },
+];
+
+type WidgetOnChange = (data: WidgetData) => any;
+
 export type WidgetSettingsChildProps = {
-	onChange: Function;
+	onChange: WidgetOnChange;
 	widgetSettings: any;
 };
 
 const WidgetSettings: React.FC<Props> = ({ isNew = false }) => {
 	const { dashboardId, widgetId } = useParams();
-	const originalWidget =
-		useSelector((state: RootState) => {
-			const dashboard = state.dashboard.dashboards[dashboardId];
-			return dashboard?.widgets?.find((w) => w.id === widgetId);
-		}) || {};
+	const { dashboard, originalWidget } = useSelector((state: RootState) => {
+		const dashboard = state.dashboard.dashboards[dashboardId];
 
-	const [widgetType, setWidgetType] = useState(
-		(originalWidget?.type as string) || ''
-	);
-	const [widget, setWidget] = useState(originalWidget || {});
+		let originalWidget: WidgetData;
+		if (!isNew) {
+			// @ts-ignore: This may return undefined. That's fine, we'll fix it later
+			originalWidget = dashboard?.widgets?.find((w) => w.id === widgetId);
+
+			// @ts-ignore: We know it's not defined. That's the point
+		} else if (!originalWidget) {
+			const id = createWidgetId(dashboard?.widgets || []);
+			originalWidget = { id, type: '' };
+		}
+
+		return { dashboard, originalWidget };
+	});
+
+	const [widget, setWidget] = useState(originalWidget);
 
 	let header = isNew ? 'Create widget' : 'Update widget';
 	let widgetTypePicker;
 
 	if (isNew) {
-		const options = Object.values(WidgetType).map((key) => (
-			<option key={key} value={key}>
-				{key}
+		// Build widget types. Ignore unknown type
+		const options = widgetTypes.map(({ type, label }) => (
+			<option key={type} value={type}>
+				{label}
 			</option>
 		));
 
 		widgetTypePicker = (
 			<Field label="Widget type">
 				<Select
-					value={widgetType}
-					onChange={(event) => setWidgetType(event.target.value)}
+					value={widget.type}
+					onChange={(event) => {
+						const type = event.target.value as WidgetType;
+						// @ts-ignore: I don't know why typescript doesn't like this
+						setWidget({ ...widget, type });
+					}}
 				>
 					<option>Choose widget type</option>
 					{options}
@@ -53,19 +74,19 @@ const WidgetSettings: React.FC<Props> = ({ isNew = false }) => {
 		);
 	}
 
-	const handleChange = (value: any) => {
-		console.log('New widget settings', value);
-		setWidget(value);
+	const handleChange: WidgetOnChange = (data) => {
+		console.log('New widget settings', data);
+		setWidget(data);
 	};
 
-	let widgetSettings: React.ReactNode = widgetType && (
+	let widgetSettings: React.ReactNode = widget.type && (
 		<div className="control">Widget type not found</div>
 	);
-	if (widgetType) {
+	if (widget.type) {
 		widgetSettings = <div className="control">No settings available</div>;
 
-		if (widgetType === WidgetType.AGGREGATE) {
-		} else if (widgetType === WidgetType.DOOR_CONTROL) {
+		if (widget.type === 'AGGREGATE') {
+		} else if (widget.type === 'DOOR_CONTROL') {
 			widgetSettings = (
 				<DoorControlSettings onChange={handleChange} widgetSettings={widget} />
 			);
@@ -75,6 +96,27 @@ const WidgetSettings: React.FC<Props> = ({ isNew = false }) => {
 	const navigate = useNavigate();
 	const handleClose = () => {
 		navigate(-1);
+	};
+
+	const [working, setWorking] = useState(false);
+	const dispatch = useDispatch();
+	const handleSave = () => {
+		setWorking(true);
+
+		let widgets: WidgetData[] = [];
+		if (dashboard?.widgets) widgets = [...dashboard.widgets];
+
+		if (isNew) {
+			widget.id = createWidgetId(widgets);
+			widgets.push(widget);
+		}
+
+		try {
+			dispatch(patchDashboard({ id: dashboardId, data: { widgets } }));
+			handleClose();
+		} catch {
+			setWorking(false);
+		}
 	};
 
 	return (
@@ -87,7 +129,13 @@ const WidgetSettings: React.FC<Props> = ({ isNew = false }) => {
 				</section>
 				<footer className="modal-card-foot">
 					{widget && (
-						<button className="button is-success">Save changes</button>
+						<button
+							className="button is-success"
+							onClick={handleSave}
+							disabled={working}
+						>
+							Save changes
+						</button>
 					)}
 					<button className="button" onClick={handleClose}>
 						Cancel

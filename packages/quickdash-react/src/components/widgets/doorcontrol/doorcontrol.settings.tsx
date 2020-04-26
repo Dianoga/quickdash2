@@ -1,19 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { DoorControlProps } from './doorcontrol.widget';
 import { Field, DevicePicker, DevicePickerValue } from '../../elements';
 import { WidgetSettingsChildProps } from '../widget.settings';
 
-interface Props extends WidgetSettingsChildProps {
-	widgetSettings: Partial<DoorControlProps>;
-}
+type Props = WidgetSettingsChildProps & {
+	widgetSettings: DoorControlData & { deviceComponentId?: DeviceComponentId };
+};
 
-const DoorControlSettings: React.FC<Props> = ({
-	widgetSettings: { deviceComponentId },
-	onChange,
-}) => {
+const DoorControlSettings: React.FC<Props> = ({ widgetSettings, onChange }) => {
+	const { deviceComponentId } = widgetSettings;
+
 	const handleDevicePick = (value?: DevicePickerValue) => {
-		onChange({ deviceComponentId: value });
+		const data: DoorControlData = {
+			...widgetSettings,
+			deviceComponentId: value as string,
+		};
+		onChange(data);
 	};
 
 	return (

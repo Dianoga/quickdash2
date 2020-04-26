@@ -2,7 +2,7 @@ import feathers from '@feathersjs/feathers';
 import socketio from '@feathersjs/socketio-client';
 import io from 'socket.io-client';
 import auth from '@feathersjs/authentication-client';
-import { patched } from '../store/device-status.slice';
+import { patched, DeviceStatusData } from '../store/device-status.slice';
 
 const client = feathers();
 
@@ -43,10 +43,11 @@ export const initFeathers = async (dispatch: Function): Promise<void> => {
 			dispatch({ type: 'user/login/rejected', payload: e });
 		});
 
-	client.service('api/device-statuses').on('patched', (event) => {
-		dispatch(patched(event));
-		// console.log(event);
-	});
+	client
+		.service('api/device-statuses')
+		.on('patched', (event: DeviceStatusData) => {
+			dispatch(patched(event));
+		});
 };
 
 export default client;

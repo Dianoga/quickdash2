@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import client from '../libs/feathers';
+import { DeviceStatusData } from './device-status.slice';
 
 export const refreshDeviceStatuses = createAsyncThunk(
 	'quickdash/refreshDevices',
@@ -21,8 +22,6 @@ export const refreshDevices = createAsyncThunk(
 		return response;
 	}
 );
-
-export type DeviceStatusData = {};
 
 type SliceState = {
 	loading: boolean;

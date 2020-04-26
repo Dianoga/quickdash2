@@ -14,13 +14,14 @@ export type DeviceFilter = {
 const makeDevicesSelector = () =>
 	createSelector(
 		(state: RootState) => state.device.devices,
-		(_, deviceFilter: DeviceFilter) => deviceFilter,
+		(_: any, deviceFilter: DeviceFilter) => deviceFilter,
 		(devices, { deviceFilter, capabilityFilter }) => {
 			return Object.values(devices).filter((device) => {
 				let found = true;
 				if (deviceFilter && deviceFilter.length > 0) {
 					found = deviceFilter.some((filter) => {
 						return Object.keys(filter).every(
+							// @ts-ignore: This is fine
 							(key) => device[key] === filter[key]
 						);
 					});
@@ -47,6 +48,7 @@ const makeDeviceStatusesSelector = () =>
 			return Object.values(statuses).filter((status) => {
 				return statusFilter.some((filter) => {
 					return Object.keys(filter).every(
+						// @ts-ignore: This is fine
 						(key) => status[key] === filter[key]
 					);
 				});

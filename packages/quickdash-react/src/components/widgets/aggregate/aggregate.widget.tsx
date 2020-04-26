@@ -8,15 +8,7 @@ import Icon, { IconType } from '../../icons';
 
 import './aggregate.widget.scss';
 
-type Props = {
-	capabilityId: string;
-	attributeName: string;
-	deviceFilter?: Partial<DeviceData>[];
-	iconType?: IconType;
-	warnValues: string[];
-};
-
-const Aggregate: React.FC<Props> = ({
+const Aggregate: React.FC<AggregateData> = ({
 	attributeName,
 	capabilityId,
 	deviceFilter = [],

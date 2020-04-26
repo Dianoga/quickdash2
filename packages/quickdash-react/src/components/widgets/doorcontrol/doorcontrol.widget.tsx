@@ -2,17 +2,11 @@ import React, { useState } from 'react';
 import classnames from 'classnames';
 
 import { useDeviceStatuses } from '../../../utils/device.hooks';
+import { extractDeviceComponentId } from '../../../utils/helpers';
 
 import './doorcontrol.widget.scss';
-import { DeviceComponentId } from '../../../typings/global';
-import { extractDeviceComponentId } from '../../../utils/device.utils';
-import { WidgetSettingsChildProps } from '../widget.settings';
 
-export type DoorControlProps = {
-	deviceComponentId: DeviceComponentId;
-};
-
-const DoorControl: React.FC<DoorControlProps> = ({ deviceComponentId }) => {
+const DoorControl: React.FC<DoorControlData> = ({ deviceComponentId }) => {
 	const [status] = useDeviceStatuses([
 		{
 			...extractDeviceComponentId(deviceComponentId),
