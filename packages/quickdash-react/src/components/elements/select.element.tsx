@@ -1,15 +1,16 @@
 import React from 'react';
 import classnames from 'classnames';
 
-export type SelectValue = string | string[];
+export type SelectValue = string | string[] | undefined;
 
 type Props = React.PropsWithChildren<{
 	extraClasses?: any;
 	control?: boolean;
-	onSelected?: (value?: SelectValue) => any;
 	placeholder?: string;
-}> &
-	React.SelectHTMLAttributes<HTMLSelectElement>;
+	multiple?: boolean;
+	onSelected?: (value: SelectValue) => any;
+	value?: SelectValue;
+}>;
 
 const Select: React.FC<Props> = ({
 	children,

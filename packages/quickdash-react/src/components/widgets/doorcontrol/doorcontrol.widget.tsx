@@ -1,10 +1,20 @@
 import React, { useState } from 'react';
 import classnames from 'classnames';
 
-import { useDeviceStatuses } from '../../../utils/device.hooks';
+import {
+	useDeviceStatuses,
+	DeviceComponentId,
+} from '../../../utils/device.hooks';
 import { extractDeviceComponentId } from '../../../utils/helpers';
 
+import type { BaseWidgetData } from '../widget';
+
 import './doorcontrol.widget.scss';
+
+export interface DoorControlData extends BaseWidgetData {
+	type: 'DOOR_CONTROL';
+	deviceComponentId: DeviceComponentId;
+}
 
 const DoorControl: React.FC<DoorControlData> = ({ deviceComponentId }) => {
 	const [status] = useDeviceStatuses([

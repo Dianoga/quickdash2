@@ -1,5 +1,7 @@
-import { DeviceData, Capability } from '../store/device.slice';
 import { shallowEqual } from 'react-redux';
+
+import { DeviceData, Capability } from '../store/device.slice';
+import { DeviceComponentId } from './device.hooks';
 
 export const extractDeviceComponentId = (id: DeviceComponentId) => {
 	const [deviceId, componentId] = id.split(':');

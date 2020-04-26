@@ -1,15 +1,22 @@
 import React from 'react';
 
-import { DeviceFilter, useDevices } from '../../utils/device.hooks';
+import {
+	useDevices,
+	DeviceFilter,
+	DeviceComponentId,
+} from '../../utils/device.hooks';
 import { Select } from '.';
 
-export type DevicePickerValue = DeviceComponentId | DeviceComponentId[];
+export type DevicePickerValue =
+	| DeviceComponentId[]
+	| DeviceComponentId
+	| undefined;
 
 type Props = {
 	deviceFilter: DeviceFilter;
 	multiple?: boolean;
-	onDevicePick: (value?: DevicePickerValue) => any;
 	value?: DevicePickerValue;
+	onDevicePick: (selectedValue: DevicePickerValue) => any;
 };
 
 const DevicePicker: React.FC<Props> = ({

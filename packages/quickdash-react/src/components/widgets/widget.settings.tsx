@@ -3,11 +3,14 @@ import ReactModal from 'react-modal';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { RootState } from '../../store';
 import { patchDashboard } from '../../store/dashboard.slice';
 import { Field, Select } from '../elements';
 import { DoorControlSettings } from './doorcontrol';
 import { createWidgetId } from '../../utils/helpers';
+import AggregateSettings from './aggregate/aggregate.settings';
+
+import type { RootState } from '../../store';
+import type { WidgetType, WidgetData } from './widget';
 
 type Props = {
 	isNew?: boolean;
@@ -22,7 +25,6 @@ type WidgetOnChange = (data: WidgetData) => any;
 
 export type WidgetSettingsChildProps = {
 	onChange: WidgetOnChange;
-	widgetSettings: any;
 };
 
 const WidgetSettings: React.FC<Props> = ({ isNew = false }) => {
@@ -34,9 +36,10 @@ const WidgetSettings: React.FC<Props> = ({ isNew = false }) => {
 		if (!isNew) {
 			// @ts-ignore: This may return undefined. That's fine, we'll fix it later
 			originalWidget = dashboard?.widgets?.find((w) => w.id === widgetId);
+		}
 
-			// @ts-ignore: We know it's not defined. That's the point
-		} else if (!originalWidget) {
+		// @ts-ignore: We know it might not be defined. That's the point
+		if (!originalWidget) {
 			const id = createWidgetId(dashboard?.widgets || []);
 			originalWidget = { id, type: '' };
 		}
@@ -86,6 +89,9 @@ const WidgetSettings: React.FC<Props> = ({ isNew = false }) => {
 		widgetSettings = <div className="control">No settings available</div>;
 
 		if (widget.type === 'AGGREGATE') {
+			widgetSettings = (
+				<AggregateSettings onChange={handleChange} widgetSettings={widget} />
+			);
 		} else if (widget.type === 'DOOR_CONTROL') {
 			widgetSettings = (
 				<DoorControlSettings onChange={handleChange} widgetSettings={widget} />
