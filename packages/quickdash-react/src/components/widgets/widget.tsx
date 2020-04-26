@@ -1,5 +1,4 @@
 import React, { Suspense, lazy } from 'react';
-import { useData } from 'muuri-react';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 
@@ -27,7 +26,6 @@ type Props = WidgetData;
 
 const Widget: React.FC<Props> = (widgetData) => {
 	const { id, type, width = 1, height = 1 } = widgetData;
-	useData({ type });
 
 	let widget = <p>Unimplemented</p>;
 	if (type === 'DOOR_CONTROL') {

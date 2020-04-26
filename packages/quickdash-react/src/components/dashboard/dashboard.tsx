@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { MuuriComponent } from 'muuri-react';
 import { useSelector } from 'react-redux';
 import { Link, Route, Routes, useParams } from 'react-router-dom';
@@ -21,7 +21,6 @@ const Dashboard: React.FC = () => {
 	});
 
 	const layoutOptions = {
-		layout: { fillGaps: true },
 		dragEnabled: false,
 		dragContainer: document.body,
 		// The placeholder of an item that is being dragged.
@@ -36,22 +35,27 @@ const Dashboard: React.FC = () => {
 	return (
 		<PageLayout>
 			<section className="dashboard">
-				<MuuriComponent {...layoutOptions}>{children}</MuuriComponent>
-				<div className="edit dropdown is-hoverable is-up is-right">
-					<div className="dropdown-trigger">
-						<button
-							className="button"
-							aria-haspopup="true"
-							aria-controls="dropdown-menu"
-						>
-							<span>Edit</span>
-						</button>
-					</div>
-					<div className="dropdown-menu" id="dropdown-menu" role="menu">
-						<div className="dropdown-content">
-							<Link className="dropdown-item" to="widget/new">
-								Add widget
-							</Link>
+				{children && (
+					<MuuriComponent {...layoutOptions}>{children}</MuuriComponent>
+				)}
+
+				<div className="edit">
+					<div className="dropdown is-hoverable is-up is-right">
+						<div className="dropdown-trigger">
+							<button
+								className="button"
+								aria-haspopup="true"
+								aria-controls="dropdown-menu"
+							>
+								<span>Edit</span>
+							</button>
+						</div>
+						<div className="dropdown-menu" id="dropdown-menu" role="menu">
+							<div className="dropdown-content">
+								<Link className="dropdown-item" to="widget/new">
+									Add widget
+								</Link>
+							</div>
 						</div>
 					</div>
 				</div>

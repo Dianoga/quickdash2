@@ -2,6 +2,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import client from '../libs/feathers';
 
+import type { WidgetData } from '../components/widgets/widget';
+
 export type DashboardData = {
 	widgets?: WidgetData[];
 	name: string;
