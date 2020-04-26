@@ -37,8 +37,23 @@ const Dashboard: React.FC = () => {
 		<PageLayout>
 			<section className="dashboard">
 				<MuuriComponent {...layoutOptions}>{children}</MuuriComponent>
-				<div className="add-widget">
-					<Link to="widget/new">Add widget</Link>
+				<div className="edit dropdown is-hoverable is-up is-right">
+					<div className="dropdown-trigger">
+						<button
+							className="button"
+							aria-haspopup="true"
+							aria-controls="dropdown-menu"
+						>
+							<span>Edit</span>
+						</button>
+					</div>
+					<div className="dropdown-menu" id="dropdown-menu" role="menu">
+						<div className="dropdown-content">
+							<Link className="dropdown-item" to="widget/new">
+								Add widget
+							</Link>
+						</div>
+					</div>
 				</div>
 			</section>
 			<Routes>
