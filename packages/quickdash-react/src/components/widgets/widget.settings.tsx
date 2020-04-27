@@ -88,6 +88,7 @@ const WidgetSettings: React.FC<Props> = ({ isNew = false }) => {
 	}
 
 	const handleChange: WidgetOnChange = (data) => {
+		console.log('Widget settings', data);
 		setWidget(data);
 	};
 
@@ -134,6 +135,23 @@ const WidgetSettings: React.FC<Props> = ({ isNew = false }) => {
 			dispatch(patchDashboard({ id: dashboardId, data: { widgets } }));
 			handleClose();
 		} catch {
+			setWorking(false);
+		}
+	};
+
+	const handleDelete = () => {
+		setWorking(true);
+
+		try {
+			let widgets = Array.from(dashboard?.widgets || []);
+			const i = widgets.findIndex((w) => w.id === widget.id);
+			if (i >= 0) {
+				widgets.splice(i, 1);
+				dispatch(patchDashboard({ id: dashboardId, data: { widgets } }));
+			}
+			handleClose();
+		} catch (e) {
+			console.error('Error deleting widget', e);
 			setWorking(false);
 		}
 	};
@@ -189,6 +207,14 @@ const WidgetSettings: React.FC<Props> = ({ isNew = false }) => {
 					<button className="button" onClick={handleClose}>
 						Cancel
 					</button>
+					{!isNew && (
+						<button
+							className="button is-pulled-right is-danger"
+							onClick={handleDelete}
+						>
+							Delete
+						</button>
+					)}
 				</footer>
 			</div>
 			<button
