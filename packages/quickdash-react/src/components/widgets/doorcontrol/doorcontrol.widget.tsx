@@ -17,6 +17,9 @@ export interface DoorControlData extends BaseWidgetData {
 }
 
 const DoorControl: React.FC<DoorControlData> = ({ deviceComponentId }) => {
+	// console.log('doorcontrol rendered', deviceComponentId);
+	if (!deviceComponentId) throw new Error('Device not specified');
+
 	const [status] = useDeviceStatuses([
 		{
 			...extractDeviceComponentId(deviceComponentId),
