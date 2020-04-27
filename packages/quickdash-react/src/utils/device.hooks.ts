@@ -27,13 +27,14 @@ const makeDevicesSelector = () =>
 					!!capabilityFilter?.length;
 
 				if (deviceComponentIds?.length) {
-					deviceComponentIds.forEach((dci) => {
+					found = deviceComponentIds.some((dci) => {
 						const { deviceId, componentId } = extractDeviceComponentId(dci);
-						found =
+						return (
 							device.deviceId === deviceId &&
-							!!device.components.find(
+							device.components.some(
 								(component) => component.id === componentId
-							);
+							)
+						);
 					});
 				}
 
