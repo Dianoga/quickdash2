@@ -9,6 +9,13 @@ import PageLayout from '../utility/page.layout';
 import { RootState } from '../../store';
 import WidgetSettings from '../widgets/widget.settings';
 
+const dragPlaceholder = {
+	enabled: true,
+	createElement: function (item: any) {
+		return item.getElement().cloneNode(true);
+	},
+};
+
 const Dashboard: React.FC = () => {
 	const { dashboardId } = useParams();
 
@@ -24,20 +31,15 @@ const Dashboard: React.FC = () => {
 		dragEnabled: false,
 		dragContainer: document.body,
 		// The placeholder of an item that is being dragged.
-		dragPlaceholder: {
-			enabled: true,
-			createElement: function (item: any) {
-				return item.getElement().cloneNode(true);
-			},
-		},
+		dragPlaceholder,
 	};
+
+	// console.log('dashboard rendered - child count', dashboard?.widgets?.length);
 
 	return (
 		<PageLayout>
 			<section className="dashboard">
-				{children && (
-					<MuuriComponent {...layoutOptions}>{children}</MuuriComponent>
-				)}
+				<MuuriComponent {...layoutOptions}>{children}</MuuriComponent>
 
 				<div className="edit">
 					<div className="dropdown is-hoverable is-up is-right">
