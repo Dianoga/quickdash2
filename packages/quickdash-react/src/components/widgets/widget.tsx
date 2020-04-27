@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 import type { DoorControlData } from './doorcontrol/doorcontrol.widget';
 import type { AggregateData } from './aggregate/aggregate.widget';
+import { WidgetErrorBoundary } from './widget.error';
 
 const DoorControl = lazy(() => import('./doorcontrol'));
 const Aggregate = lazy(() => import('./aggregate'));
@@ -43,9 +44,11 @@ const Widget: React.FC<Props> = (widgetData) => {
 	return (
 		<div className={widgetClasses}>
 			<div className="widget-content">
-				<Suspense fallback={<div className="widget">Loading</div>}>
-					{widget}
-				</Suspense>
+				<WidgetErrorBoundary>
+					<Suspense fallback={<div className="widget">Loading</div>}>
+						{widget}
+					</Suspense>
+				</WidgetErrorBoundary>
 				<Link className="settings" to={`widget/${id}/settings`}>
 					...
 				</Link>
