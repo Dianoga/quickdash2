@@ -15,6 +15,7 @@ export type DevicePickerValue =
 type Props = {
 	deviceFilter: DeviceFilter;
 	multiple?: boolean;
+	required?: boolean;
 	value?: DevicePickerValue;
 	onDevicePick: (selectedValue: DevicePickerValue) => any;
 };
@@ -23,6 +24,7 @@ const DevicePicker: React.FC<Props> = ({
 	deviceFilter,
 	multiple = true,
 	onDevicePick,
+	required = true,
 	value,
 }) => {
 	const devices = useDevices(deviceFilter, true);
@@ -51,6 +53,7 @@ const DevicePicker: React.FC<Props> = ({
 	return (
 		<Select
 			multiple={multiple}
+			required={required}
 			onSelected={handleChange}
 			placeholder={multiple ? undefined : 'Choose device'}
 			value={value}

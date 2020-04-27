@@ -4,23 +4,25 @@ import classnames from 'classnames';
 export type SelectValue = string | string[] | undefined;
 
 type Props = React.PropsWithChildren<{
-	allowEmpty?: boolean;
 	control?: boolean;
 	extraClasses?: any;
 	multiple?: boolean;
 	onSelected?: (value: SelectValue) => any;
 	placeholder?: string;
+	required?: boolean;
+	showPlaceholder?: boolean;
 	value?: SelectValue;
 }>;
 
 const Select: React.FC<Props> = ({
-	allowEmpty = false,
 	children,
 	control = false,
 	extraClasses,
-	onSelected,
-	placeholder,
 	multiple = false,
+	onSelected,
+	placeholder = '',
+	required = false,
+	showPlaceholder = true,
 	value,
 }) => {
 	const containerClass = classnames(
@@ -51,13 +53,9 @@ const Select: React.FC<Props> = ({
 				onChange={handleChange}
 				multiple={multiple}
 				value={value}
+				required={required}
 			>
-				{placeholder && (
-					<option value="" disabled>
-						{placeholder}
-					</option>
-				)}
-				{allowEmpty && <option value="" />}
+				{showPlaceholder && <option value="">{placeholder}</option>}
 				{children}
 			</select>
 		</div>
