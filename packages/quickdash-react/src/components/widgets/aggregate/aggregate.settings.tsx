@@ -105,7 +105,7 @@ const AggregateSettings: React.FC<Props> = ({ widgetSettings, onChange }) => {
 		fields.push(
 			<Field key="icon" label="Icon">
 				<Select
-					allowEmpty={true}
+					required={false}
 					value={iconType}
 					onSelected={(value) => handleChange('iconType', value as IconType)}
 				>
