@@ -22,7 +22,7 @@ const Select: React.FC<Props> = ({
 	onSelected,
 	placeholder = '',
 	required = false,
-	showPlaceholder = true,
+	showPlaceholder = !multiple,
 	value,
 }) => {
 	const containerClass = classnames(

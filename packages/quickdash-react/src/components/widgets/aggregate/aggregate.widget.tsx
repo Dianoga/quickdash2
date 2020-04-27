@@ -62,22 +62,25 @@ const Aggregate: React.FC<AggregateData> = ({
 		}
 	});
 
-	const classes = classnames('aggregate', { warn: warnValues.length > 0 });
+	const isWarn = warnDevices.length > 0;
+
+	const classes = classnames('aggregate', { warn: isWarn });
 
 	let warnDevicesEl;
-	if (warnDevices.length > 0) {
+	if (isWarn) {
 		let status = warnDevices[0].displayName;
 		if (warnDevices.length > 1) {
 			status += ` and ${warnDevices.length - 1} others`;
 		}
-		warnDevicesEl = <div className="warn-devices">{status}</div>;
+		warnDevicesEl = <div className="message warn-devices">{status}</div>;
 	}
 
-	const iconClasses = classnames({ warn: warnValues.length > 0 });
+	const iconClasses = classnames({ warn: isWarn });
 	return (
 		<div className={classes}>
 			{iconType && <Icon className={iconClasses} type={iconType} />}
 			{warnDevicesEl}
+			{!isWarn && <div className="message awesome">Everything is awesome</div>}
 		</div>
 	);
 };
