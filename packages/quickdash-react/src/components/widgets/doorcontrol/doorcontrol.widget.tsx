@@ -1,19 +1,28 @@
-import React, { useState } from 'react';
+import React from 'react';
 import classnames from 'classnames';
 
-import { useDeviceStatuses } from '../../../utils/device.hooks';
+import {
+	useDeviceStatuses,
+	DeviceComponentId,
+} from '../../../utils/device.hooks';
+import { extractDeviceComponentId } from '../../../utils/helpers';
+
+import type { BaseWidgetData } from '../widget';
 
 import './doorcontrol.widget.scss';
 
-export type DoorControlProps = {
-	deviceId: string;
-};
+export interface DoorControlData extends BaseWidgetData {
+	type: 'DOOR_CONTROL';
+	deviceComponentId: DeviceComponentId;
+}
 
-const DoorControl: React.FC<DoorControlProps> = ({ deviceId }) => {
+const DoorControl: React.FC<DoorControlData> = ({ deviceComponentId }) => {
+	// console.log('doorcontrol rendered', deviceComponentId);
+	if (!deviceComponentId) throw new Error('Device not specified');
+
 	const [status] = useDeviceStatuses([
 		{
-			deviceId: deviceId,
-			componentId: 'main',
+			...extractDeviceComponentId(deviceComponentId),
 			capabilityId: 'doorControl',
 			attributeName: 'door',
 		},

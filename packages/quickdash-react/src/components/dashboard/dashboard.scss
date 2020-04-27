@@ -2,6 +2,14 @@
 	position: relative;
 }
 
+.dashboard {
+	& > .edit {
+		position: fixed;
+		bottom: 10px;
+		right: 10px;
+	}
+}
+
 @for $i from 2 through 4 {
 	.widget.width-#{$i} {
 		--widget-width: calc(
@@ -57,4 +65,10 @@
 	overflow: hidden;
 
 	color: var(--widget-text);
+
+	.settings {
+		position: absolute;
+		bottom: 0;
+		right: 5px;
+	}
 }

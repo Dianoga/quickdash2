@@ -3,14 +3,21 @@ import React, { useEffect } from 'react';
 import Login from './components/user/login';
 import { useSelector, useDispatch } from 'react-redux';
 import { Navigate, Routes, Route } from 'react-router-dom';
+import ReactModal from 'react-modal';
 
-import './app.scss';
 import Profile from './components/user/profile';
-import UserActions from './components/user/actions';
-import { RootState } from './store';
+import Setup from './components/setup';
 import Dashboard from './components/dashboard/dashboard';
+import { RootState } from './store';
 import { fetchDevices } from './store/device.slice';
 import { fetchDeviceStatuses } from './store/device-status.slice';
+import { fetchDashboards } from './store/dashboard.slice';
+
+import './app.scss';
+
+ReactModal.defaultStyles.content = {};
+ReactModal.defaultStyles.overlay = {};
+ReactModal.setAppElement('body');
 
 function App() {
 	const { user, loading } = useSelector((state: RootState) => state.user);
@@ -18,10 +25,11 @@ function App() {
 	const dispatch = useDispatch();
 	useEffect(() => {
 		if (user) {
+			dispatch(fetchDashboards());
 			dispatch(fetchDevices());
 			dispatch(fetchDeviceStatuses());
 		}
-	}, [user]);
+	}, [user, dispatch]);
 
 	return (
 		<div className="app">
@@ -29,7 +37,8 @@ function App() {
 				{user && (
 					<>
 						<Route path="/user/profile" element={<Profile />} />
-						<Route path="/" element={<Dashboard />} />
+						<Route path="/dashboard/:dashboardId/*" element={<Dashboard />} />
+						<Route path="/" element={<Setup />} />
 						<Route path="*" element={<Navigate to="/" />} />
 					</>
 				)}

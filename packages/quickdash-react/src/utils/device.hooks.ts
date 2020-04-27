@@ -5,8 +5,12 @@ import { createSelector } from 'reselect';
 import { DeviceStatusData } from '../store/device-status.slice';
 import { RootState } from '../store';
 import { DeviceData } from '../store/device.slice';
+import { extractDeviceComponentId } from './helpers';
 
-type DeviceFilter = {
+export type DeviceComponentId = string;
+
+export type DeviceFilter = {
+	deviceComponentIds?: DeviceComponentId[];
 	deviceFilter?: Partial<DeviceData>[];
 	capabilityFilter?: string[];
 };
@@ -14,19 +18,36 @@ type DeviceFilter = {
 const makeDevicesSelector = () =>
 	createSelector(
 		(state: RootState) => state.device.devices,
-		(_, deviceFilter: DeviceFilter) => deviceFilter,
-		(devices, { deviceFilter, capabilityFilter }) => {
+		(_: any, deviceFilter: DeviceFilter) => deviceFilter,
+		(devices, { deviceComponentIds, deviceFilter, capabilityFilter }) => {
 			return Object.values(devices).filter((device) => {
-				let found = true;
-				if (deviceFilter && deviceFilter.length > 0) {
+				let found =
+					!!deviceComponentIds?.length ||
+					!!deviceFilter?.length ||
+					!!capabilityFilter?.length;
+
+				if (deviceComponentIds?.length) {
+					found = deviceComponentIds.some((dci) => {
+						const { deviceId, componentId } = extractDeviceComponentId(dci);
+						return (
+							device.deviceId === deviceId &&
+							device.components.some(
+								(component) => component.id === componentId
+							)
+						);
+					});
+				}
+
+				if (found && deviceFilter?.length) {
 					found = deviceFilter.some((filter) => {
 						return Object.keys(filter).every(
+							// @ts-ignore: This is fine
 							(key) => device[key] === filter[key]
 						);
 					});
 				}
 
-				if (found && capabilityFilter && capabilityFilter.length > 0) {
+				if (found && capabilityFilter?.length) {
 					found = device.components.some((component) => {
 						return component.capabilities.some((capability) =>
 							capabilityFilter.includes(capability.id)
@@ -47,6 +68,7 @@ const makeDeviceStatusesSelector = () =>
 			return Object.values(statuses).filter((status) => {
 				return statusFilter.some((filter) => {
 					return Object.keys(filter).every(
+						// @ts-ignore: This is fine
 						(key) => status[key] === filter[key]
 					);
 				});
@@ -54,12 +76,19 @@ const makeDeviceStatusesSelector = () =>
 		}
 	);
 
-export const useDevices = (deviceFilter: DeviceFilter) => {
+export const useDevices = (
+	deviceFilter: DeviceFilter,
+	sort: boolean = false
+) => {
 	const memoSelector = useMemo(makeDevicesSelector, []);
 	const devices = useSelector(
 		(state: RootState) => memoSelector(state, deviceFilter),
 		shallowEqual
 	);
+
+	if (sort) {
+		devices.sort((a, b) => (a.displayName <= b.displayName ? -1 : 1));
+	}
 
 	return devices;
 };

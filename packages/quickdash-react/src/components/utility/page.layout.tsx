@@ -6,7 +6,7 @@ const PageLayout: React.FC = ({ children }) => {
 		<div className="container">
 			<nav className="navbar" role="navigation" aria-label="main navigation">
 				<div className="navbar-brand">
-					<NavLink className="navbar-item" to="/dashboard">
+					<NavLink className="navbar-item" to="/">
 						Dashboard
 					</NavLink>
 					<NavLink className="navbar-item" to="/user/profile">

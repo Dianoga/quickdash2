@@ -1,43 +1,38 @@
-import React, {
-	Suspense,
-	lazy,
-	Profiler,
-	ProfilerOnRenderCallback,
-} from 'react';
-import { useData } from 'muuri-react';
+import React, { Suspense, lazy } from 'react';
 import classnames from 'classnames';
+import { Link } from 'react-router-dom';
 
-import TestWidget from './test.widget';
+import type { DoorControlData } from './doorcontrol/doorcontrol.widget';
+import type { AggregateData } from './aggregate/aggregate.widget';
+import { WidgetErrorBoundary } from './widget.error';
 
 const DoorControl = lazy(() => import('./doorcontrol'));
 const Aggregate = lazy(() => import('./aggregate'));
 
-enum WidgetType {
-	DOOR_CONTROL = 'DOOR_CONTROL',
-	AGGREGATE = 'AGGREGATE',
-	TEST = 'TEST',
+export type WidgetType = 'DOOR_CONTROL' | 'AGGREGATE' | '';
+
+export interface BaseWidgetData {
+	id: string;
+	width: string;
+	height: string;
 }
 
-type Props = {
-	widgetInfo: {
-		type: WidgetType;
-		width?: number;
-		height?: number;
-	} & any;
-};
+export interface UnknownData extends BaseWidgetData {
+	type: '';
+}
 
-const Widget: React.FC<Props> = ({
-	widgetInfo: { type, width = 1, height = 1, ...widgetParams },
-}) => {
-	useData({ type });
+export type WidgetData = UnknownData | DoorControlData | AggregateData;
+
+type Props = WidgetData;
+
+const Widget: React.FC<Props> = (widgetData) => {
+	const { id, type, width = '1', height = '1' } = widgetData;
 
 	let widget = <p>Unimplemented</p>;
-	if (type === WidgetType.TEST) {
-		widget = <TestWidget {...widgetParams} />;
-	} else if (type === WidgetType.DOOR_CONTROL) {
-		widget = <DoorControl {...widgetParams} />;
-	} else if (type === WidgetType.AGGREGATE) {
-		widget = <Aggregate {...widgetParams} />;
+	if (type === 'DOOR_CONTROL') {
+		widget = <DoorControl {...(widgetData as DoorControlData)} />;
+	} else if (type === 'AGGREGATE') {
+		widget = <Aggregate {...(widgetData as AggregateData)} />;
 	}
 
 	const widgetClasses = classnames([
@@ -49,14 +44,14 @@ const Widget: React.FC<Props> = ({
 	return (
 		<div className={widgetClasses}>
 			<div className="widget-content">
-				<Suspense fallback={<div className="widget">Loading</div>}>
-					{/* <Profiler
-						id={JSON.stringify({ type, ...widgetParams })}
-						onRender={console.log}
-					> */}
-					{widget}
-					{/* </Profiler> */}
-				</Suspense>
+				<WidgetErrorBoundary>
+					<Suspense fallback={<div className="widget">Loading</div>}>
+						{widget}
+					</Suspense>
+				</WidgetErrorBoundary>
+				<Link className="settings" to={`widget/${id}/settings`}>
+					...
+				</Link>
 			</div>
 		</div>
 	);

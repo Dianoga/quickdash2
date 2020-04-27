@@ -11,6 +11,7 @@ import {
 } from '../../store/location.slice';
 import { refreshRooms } from '../../store/room.slice';
 import { Button } from '../elements';
+import { createDashboard } from '../../store/dashboard.slice';
 
 const UserActions: React.FC = () => {
 	const dispatch = useDispatch();
@@ -42,6 +43,11 @@ const UserActions: React.FC = () => {
 				<li>
 					<Button onClick={() => dispatch(subscribeSmartthings())}>
 						Start SmartThings Subscription
+					</Button>
+				</li>
+				<li>
+					<Button onClick={() => dispatch(createDashboard({ name: 'Home' }))}>
+						Create empty dashboard
 					</Button>
 				</li>
 			</ul>
