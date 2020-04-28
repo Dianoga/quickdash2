@@ -80,6 +80,7 @@ export const useDevices = (
 	deviceFilter: DeviceFilter,
 	sort: boolean = false
 ) => {
+	// const start = Date.now();
 	const memoSelector = useMemo(makeDevicesSelector, []);
 	const devices = useSelector(
 		(state: RootState) => memoSelector(state, deviceFilter),
@@ -90,17 +91,23 @@ export const useDevices = (
 		devices.sort((a, b) => (a.displayName <= b.displayName ? -1 : 1));
 	}
 
+	// console.debug(`useDevices: ${Date.now() - start}ms`);
+
 	return devices;
 };
 
 export const useDeviceStatuses = (
 	statusFilter: Partial<DeviceStatusData>[] = []
 ): DeviceStatusData[] => {
+	// const start = Date.now();
+
 	const memoSelector = useMemo(makeDeviceStatusesSelector, []);
 	const statuses = useSelector(
 		(state: RootState) => memoSelector(state, statusFilter),
 		shallowEqual
 	);
+
+	// console.debug(`useDeviceStatuses: ${Date.now() - start}ms`);
 
 	return statuses;
 };
