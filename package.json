@@ -18,5 +18,16 @@
   },
   "lint-staged": {
     "*.{js,ts,tsx,css,md}": "prettier --write"
-  }
+  },
+  "dependencies": {
+    "concurrently": "^5.2.0"
+	},
+	"release": {
+		"branches": ["master", "next"]
+	},
+	"scripts": {
+		"dev:react": "cd ./packages/quickdash-react && npm start",
+		"dev:feathers": "cd ./packages/quickdash-feathers && npm run dev",
+		"dev": "concurrently --kill-others -c blue,green npm:dev:react npm:dev:feathers"
+	}
 }
