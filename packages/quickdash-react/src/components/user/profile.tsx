@@ -56,7 +56,7 @@ const Profile: React.FC = () => {
 								}
 							/>
 						</Field>
-						<Button control={true} extraClasses="is-success">
+						<Button control={true} className="is-success">
 							Update profile
 						</Button>
 					</form>
