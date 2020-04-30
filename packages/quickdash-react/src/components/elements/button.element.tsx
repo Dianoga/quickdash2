@@ -1,8 +1,9 @@
 import React from 'react';
 import classnames from 'classnames';
+import type { ClassValue } from 'classnames/types';
 
 type Props = React.PropsWithChildren<{
-	extraClasses?: any;
+	className?: ClassValue;
 	control?: boolean;
 }> &
 	React.ButtonHTMLAttributes<HTMLButtonElement>;
@@ -10,10 +11,10 @@ type Props = React.PropsWithChildren<{
 const Button: React.FC<Props> = ({
 	children,
 	control = false,
-	extraClasses,
+	className,
 	...buttonProps
 }) => {
-	const buttonClass = classnames('button', extraClasses);
+	const buttonClass = classnames('button', className);
 
 	const button = (
 		<button className={buttonClass} {...buttonProps}>

@@ -34,7 +34,7 @@ const Login: React.FC = () => {
 							onChange={(evt) => setPassword(evt.target.value)}
 						/>
 					</Field>
-					<Button control={true} extraClasses="is-success">
+					<Button control={true} className="is-success">
 						Login
 					</Button>
 				</form>

@@ -6,6 +6,7 @@ import type { WidgetData } from '../components/widgets/widget';
 
 export type DashboardData = {
 	widgets?: WidgetData[];
+	widgetOrder?: string[];
 	name: string;
 	userId: string;
 	_id: string;
