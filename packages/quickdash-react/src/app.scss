@@ -25,6 +25,9 @@
 
 	--building-color: var(--grey-light);
 
+	--navbar-background: var(--white);
+	--navbar-text: var(--grey-dark);
+
 	// Widget settings
 	--base-widget-width: 150px;
 	--base-widget-height: 150px;
@@ -33,13 +36,17 @@
 	--widget-text: var(--grey-dark);
 }
 
-@media (prefers-color-scheme: darkk) {
+@media (prefers-color-scheme: dark) {
 	:root {
 		--background: #{invert($background)};
 		--border: #{invert($border)};
 		--warning: #{darken($warning, 25%)};
 
 		--building-color: var(--grey-light);
+
+		--navbar-background: var(--grey-dark);
+		--navbar-text: var(--white);
+
 		--widget-background: var(--grey-dark);
 		--widget-text: var(--white-ter);
 	}
@@ -76,6 +83,23 @@ pre {
 
 .ReactModal__Content {
 	@extend .modal-content;
+}
+
+.navbar {
+	background: var(--navbar-background);
+
+	.navbar-item,
+	.navbar-link {
+		color: var(--navbar-text);
+	}
+}
+
+// Override
+@media screen and (min-width: 1024px) {
+	.navbar > .container .navbar-brand,
+	.container > .navbar .navbar-brand {
+		margin-left: 0;
+	}
 }
 
 .field.is-grouped .control {
