@@ -12,6 +12,7 @@
 
 @for $i from 2 through 4 {
 	.widget.width-#{$i} {
+		--widget-columns: #{$i};
 		--widget-width: calc(
 			var(--base-widget-width) * #{$i} + var(--widget-margin) * (#{$i - 1})
 		);
@@ -21,6 +22,7 @@
 
 @for $i from 2 through 4 {
 	.widget.height-#{$i} {
+		--widget-rows: #{$i};
 		--widget-height: calc(
 			var(--base-widget-height) * #{$i} + var(--widget-margin) * (#{$i - 1})
 		);
@@ -58,8 +60,10 @@
 	width: 100%;
 	height: 100%;
 
+	--widget-padding: 5px;
+
 	background: var(--widget-background);
-	padding: 5px;
+	padding: var(--widget-padding);
 	border: 1px solid var(--border);
 	border-radius: 5px;
 	overflow: hidden;

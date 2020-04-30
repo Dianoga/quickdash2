@@ -2,17 +2,31 @@
 	width: 100%;
 	height: 100%;
 
-	display: flex;
+	display: grid;
+	grid-template-columns: repeat(
+		var(--widget-columns),
+		calc(var(--base-widget-width) - var(--widget-padding) * 2)
+	);
+	grid-template-rows: repeat(
+		var(--widget-columns),
+		calc(var(--base-widget-height) - var(--widget-padding) * 2)
+	);
+
 	justify-content: center;
 	align-items: center;
 
 	.icon {
+		margin: auto;
 		width: calc(var(--base-widget-width) * 0.75);
 		height: calc(var(--base-widget-height) * 0.75);
 		object-fit: contain;
 	}
+
+	.message {
+		flex: 1 1 auto;
+	}
 }
 
-.width-1 .message:not(:only-child) {
+.width-1.height-1 .message:not(:only-child) {
 	display: none;
 }

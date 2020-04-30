@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import type { DoorControlData } from './doorcontrol/doorcontrol.widget';
 import type { AggregateData } from './aggregate/aggregate.widget';
 import { WidgetErrorBoundary } from './widget.error';
+import { useRefresh } from 'muuri-react';
 
 const DoorControl = lazy(() => import('./doorcontrol'));
 const Aggregate = lazy(() => import('./aggregate'));
@@ -27,6 +28,8 @@ type Props = WidgetData;
 
 const Widget: React.FC<Props> = (widgetData) => {
 	const { id, type, width = '1', height = '1' } = widgetData;
+
+	useRefresh([width, height]);
 
 	let widget = <p>Unimplemented</p>;
 	if (type === 'DOOR_CONTROL') {
